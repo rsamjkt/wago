@@ -122,13 +122,27 @@ fi
 export PATH="$PATH:/usr/local/go/bin"
 
 # ── Clone / update repo ───────────────────────
-if [[ -d "$INSTALL_DIR/.git" ]]; then
-  info "Update repo di $INSTALL_DIR..."
-  git -C "$INSTALL_DIR" fetch --quiet origin
-  git -C "$INSTALL_DIR" reset --hard origin/main --quiet
-else
-  info "Mengunduh Arunika-WA ke $INSTALL_DIR..."
-  git clone --quiet "$REPO_URL" "$INSTALL_DIR"
+# Backup .env jika sudah ada dari install sebelumnya
+ENV_BACKUP=""
+if [[ -f "$INSTALL_DIR/src/.env" ]]; then
+  ENV_BACKUP=$(mktemp)
+  cp "$INSTALL_DIR/src/.env" "$ENV_BACKUP"
+  info "Konfigurasi .env di-backup"
+fi
+
+# Hapus dan clone ulang — paling aman, hindari konflik git
+if [[ -d "$INSTALL_DIR" ]]; then
+  info "Memperbarui Arunika-WA..."
+  rm -rf "$INSTALL_DIR"
+fi
+info "Mengunduh Arunika-WA ke $INSTALL_DIR..."
+git clone --quiet "$REPO_URL" "$INSTALL_DIR"
+
+# Pulihkan .env
+if [[ -n "$ENV_BACKUP" ]]; then
+  cp "$ENV_BACKUP" "$INSTALL_DIR/src/.env"
+  rm -f "$ENV_BACKUP"
+  success "Konfigurasi .env dipulihkan"
 fi
 success "Source siap di $INSTALL_DIR"
 
