@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 # ─────────────────────────────────────────────
 #  Arunika-WA — Linux Install Script
@@ -22,7 +22,29 @@ info()    { echo -e "${BLU}[•]${RST} $*"; }
 success() { echo -e "${GRN}[✓]${RST} $*"; }
 warn()    { echo -e "${YLW}[!]${RST} $*"; }
 error()   { echo -e "${RED}[✗]${RST} $*"; exit 1; }
-ask()     { echo -e "${BLD}[?]${RST} $*"; }
+ask()     { echo -ne "${BLD}[?]${RST} $* "; }
+
+# Baca input dari terminal langsung meski dijalankan via curl | bash
+tty_read() {
+  local var="$1"
+  local default="${2:-}"
+  local val=""
+  read -r val </dev/tty || true
+  if [[ -z "$val" && -n "$default" ]]; then
+    val="$default"
+  fi
+  printf -v "$var" '%s' "$val"
+}
+
+tty_read_secret() {
+  local var="$1"
+  local val=""
+  stty -echo </dev/tty
+  read -r val </dev/tty || true
+  stty echo </dev/tty
+  echo ""
+  printf -v "$var" '%s' "$val"
+}
 
 echo -e "
 ${BLD}${YLW}╔═══════════════════════════════════════╗
@@ -122,32 +144,28 @@ echo ""
 
 # PORT
 ask "Port aplikasi [default: 3000]:"
-read -r INPUT_PORT
-PORT="${INPUT_PORT:-3000}"
+tty_read PORT "3000"
 
 # AUTH
 echo ""
 warn "Basic Auth digunakan untuk melindungi API."
 ask "Username login [default: admin]:"
-read -r INPUT_USER
-AUTH_USER="${INPUT_USER:-admin}"
+tty_read AUTH_USER "admin"
 
-ask "Password login:"
-read -rs INPUT_PASS
-echo ""
-if [[ -z "$INPUT_PASS" ]]; then
-  INPUT_PASS=$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 16)
-  warn "Password kosong — digenerate otomatis: ${BLD}${INPUT_PASS}${RST}"
+ask "Password login (kosong = auto-generate):"
+tty_read_secret AUTH_PASS
+if [[ -z "$AUTH_PASS" ]]; then
+  AUTH_PASS=$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 16)
+  warn "Password digenerate otomatis: ${BLD}${AUTH_PASS}${RST}"
 fi
-AUTH_PASS="$INPUT_PASS"
 
 # WEBHOOK (opsional)
 echo ""
-ask "URL Webhook (kosongkan jika tidak ada):"
-read -r WEBHOOK_URL
+ask "URL Webhook (Enter untuk skip):"
+tty_read WEBHOOK_URL ""
 
 # ── Tulis .env ───────────────────────────────
-cat > src/.env <<EOF
+cat > src/.env <<ENVEOF
 # ──────────────────────────────────────
 #  Arunika-WA — konfigurasi
 #  Generated: $(date '+%Y-%m-%d %H:%M:%S')
@@ -185,7 +203,7 @@ CHATWOOT_INBOX_ID=
 CHATWOOT_DEVICE_ID=
 CHATWOOT_IMPORT_MESSAGES=false
 CHATWOOT_DAYS_LIMIT_IMPORT_MESSAGES=3
-EOF
+ENVEOF
 
 # ── Update port di docker-compose.yml ────────
 sed -i "s|\"3000:3000\"|\"${PORT}:3000\"|g" docker-compose.yml
@@ -199,9 +217,9 @@ success "Direktori runtime siap"
 echo ""
 info "Menarik Docker image (${IMAGE})..."
 
+BUILD_FLAG=""
 if docker pull "$IMAGE" 2>/dev/null; then
   success "Image berhasil diunduh dari Docker Hub"
-  BUILD_FLAG=""
 else
   warn "Image tidak tersedia di registry — build dari source..."
   COMPOSE_FILE="docker-compose.build.yml"
@@ -225,9 +243,9 @@ echo -e "  ${BLD}Password${RST}  : ${AUTH_PASS}"
 echo -e "  ${BLD}Data${RST}      : ${INSTALL_DIR}/storages"
 echo ""
 echo -e "  Perintah berguna:"
-echo -e "  ${BLU}docker compose -f ${INSTALL_DIR}/${COMPOSE_FILE} logs -f${RST}   — lihat log"
-echo -e "  ${BLU}docker compose -f ${INSTALL_DIR}/${COMPOSE_FILE} restart${RST}    — restart"
-echo -e "  ${BLU}docker compose -f ${INSTALL_DIR}/${COMPOSE_FILE} down${RST}       — stop"
+echo -e "  ${BLU}cd ${INSTALL_DIR} && docker compose -f ${COMPOSE_FILE} logs -f${RST}    — lihat log"
+echo -e "  ${BLU}cd ${INSTALL_DIR} && docker compose -f ${COMPOSE_FILE} restart${RST}     — restart"
+echo -e "  ${BLU}cd ${INSTALL_DIR} && docker compose -f ${COMPOSE_FILE} down${RST}        — stop"
 echo ""
 echo -e "  Scan QR Code di browser untuk mulai menggunakan WhatsApp."
 echo ""
