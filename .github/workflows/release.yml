@@ -35,10 +35,10 @@ jobs:
           version: latest
           install-only: true
 
-      - name: Create Linux/Windows GoReleaser config
+      - name: Create GoReleaser config (Linux/Windows)
         run: |
           cat > /tmp/.goreleaser-linux-windows.yml << 'EOF'
-          project_name: whatsapp
+          project_name: arunika-wa
 
           builds:
             - id: linux-amd64
@@ -47,73 +47,58 @@ jobs:
               env:
                 - CGO_ENABLED=1
                 - CC=gcc
-              goos:
-                - linux
-              goarch:
-                - amd64
+              goos: [linux]
+              goarch: [amd64]
               ldflags: -s -w
               binary: "{{ .Os }}-{{ .Arch }}"
-              
+
             - id: linux-arm64
               dir: ./src
               main: .
               env:
                 - CGO_ENABLED=1
                 - CC=aarch64-linux-gnu-gcc
-              goos:
-                - linux
-              goarch:
-                - arm64
+              goos: [linux]
+              goarch: [arm64]
               ldflags: -s -w
               binary: "{{ .Os }}-{{ .Arch }}"
-              
+
             - id: linux-386
               dir: ./src
               main: .
               env:
                 - CGO_ENABLED=1
                 - CC=i686-linux-gnu-gcc
-              goos:
-                - linux
-              goarch:
-                - "386"
+              goos: [linux]
+              goarch: ["386"]
               ldflags: -s -w
               binary: "{{ .Os }}-{{ .Arch }}"
-              
+
             - id: windows-amd64
               dir: ./src
               main: .
               env:
                 - CGO_ENABLED=1
                 - CC=x86_64-w64-mingw32-gcc
-              goos:
-                - windows
-              goarch:
-                - amd64
+              goos: [windows]
+              goarch: [amd64]
               ldflags: -s -w
               binary: "{{ .Os }}-{{ .Arch }}"
-              
+
             - id: windows-386
               dir: ./src
               main: .
               env:
                 - CGO_ENABLED=1
                 - CC=i686-w64-mingw32-gcc
-              goos:
-                - windows
-              goarch:
-                - "386"
+              goos: [windows]
+              goarch: ["386"]
               ldflags: -s -w
               binary: "{{ .Os }}-{{ .Arch }}"
 
           archives:
             - id: binaries
-              builds:
-                - linux-amd64
-                - linux-arm64
-                - linux-386
-                - windows-amd64
-                - windows-386
+              builds: [linux-amd64, linux-arm64, linux-386, windows-amd64, windows-386]
               format: zip
               name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 
@@ -123,11 +108,11 @@ jobs:
           release:
             draft: false
             github:
-              owner: "aldinokemal"
-              name: "go-whatsapp-web-multidevice"
+              owner: rsamjkt
+              name: wago
           EOF
 
-      - name: Run GoReleaser for Linux/Windows
+      - name: Run GoReleaser (Linux/Windows)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: goreleaser release --config /tmp/.goreleaser-linux-windows.yml --clean --timeout 60m --skip-validate
@@ -151,10 +136,10 @@ jobs:
           version: latest
           install-only: true
 
-      - name: Create macOS GoReleaser config
+      - name: Create GoReleaser config (macOS)
         run: |
           cat > /tmp/.goreleaser-macos.yml << 'EOF'
-          project_name: whatsapp
+          project_name: arunika-wa
 
           builds:
             - id: darwin-amd64
@@ -162,30 +147,24 @@ jobs:
               main: .
               env:
                 - CGO_ENABLED=1
-              goos:
-                - darwin
-              goarch:
-                - amd64
+              goos: [darwin]
+              goarch: [amd64]
               ldflags: -s -w
               binary: "{{ .Os }}-{{ .Arch }}"
-              
+
             - id: darwin-arm64
               dir: ./src
               main: .
               env:
                 - CGO_ENABLED=1
-              goos:
-                - darwin
-              goarch:
-                - arm64
+              goos: [darwin]
+              goarch: [arm64]
               ldflags: -s -w
               binary: "{{ .Os }}-{{ .Arch }}"
 
           archives:
             - id: binaries
-              builds:
-                - darwin-amd64
-                - darwin-arm64
+              builds: [darwin-amd64, darwin-arm64]
               format: zip
               name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 
@@ -195,11 +174,11 @@ jobs:
           release:
             draft: false
             github:
-              owner: "aldinokemal"
-              name: "go-whatsapp-web-multidevice"
+              owner: rsamjkt
+              name: wago
           EOF
 
-      - name: Run GoReleaser for macOS
+      - name: Run GoReleaser (macOS)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: goreleaser release --config /tmp/.goreleaser-macos.yml --timeout 60m --skip-validate
