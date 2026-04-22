@@ -5,13 +5,14 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
-    image: rsamjkt/arunika-wa:latest
+    build:
+      context: .
+      dockerfile: ./docker/golang.Dockerfile
     restart: "on-failure"
     ports:
       - "3000:3000"
     env_file:
       - src/.env
     volumes:
-      # Persist WhatsApp session + chat DBs; entrypoint chowns for arunika (uid 20001, gid 20000) on start.
       - ./storages:/app/storages
       - ./statics:/app/statics
