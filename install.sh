@@ -123,7 +123,8 @@ fi
 # ── Clone / update repo ──────────────────────
 if [[ -d "$INSTALL_DIR/.git" ]]; then
   info "Update repo di $INSTALL_DIR..."
-  git -C "$INSTALL_DIR" pull --rebase --quiet
+  git -C "$INSTALL_DIR" fetch --quiet origin
+  git -C "$INSTALL_DIR" reset --hard origin/main --quiet
 else
   info "Mengunduh Arunika-WA ke $INSTALL_DIR..."
   git clone --quiet "$REPO_URL" "$INSTALL_DIR"
