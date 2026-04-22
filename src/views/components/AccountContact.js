@@ -74,13 +74,11 @@ export default {
         }
     },
     template: `
-    <div class="olive card" @click="openModal" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui olive right ribbon label">Contacts</a>
-            <div class="header">My Contacts</div>
-            <div class="description">
-                Display all your contacts
-            </div>
+            <a class="ui blue right ribbon label">Akun</a>
+            <div class="header">📒 Kontak</div>
+            <div class="description">Cari dan lihat data kontak</div>
         </div>
     </div>
     

@@ -1,12 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/dataTables.semanticui.min.css">
     <link rel="stylesheet" href="{{ .AppBasePath }}/assets/app.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -16,412 +13,787 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-    <title>WhatsApp API {{ .AppVersion }}</title>
+    <title>Arunika-WA {{ .AppVersion }}</title>
 </head>
 <body>
+
+<!-- Splash Screen -->
 <div id="splash-screen">
-    <!-- Clean squircle logo without background wrapper -->
-    <img src="{{ .AppBasePath }}/assets/gowa.svg" alt="GoWA Logo" class="splash-icon" id="main-logo">
-    
-    <h2 class="splash-title">WhatsApp API</h2>
-    <div class="ui active large inline loader splash-spinner"></div>
+    <div class="splash-logo-wrap">
+        <img src="{{ .AppBasePath }}/assets/arunika.svg" alt="Arunika-WA" class="splash-icon">
+    </div>
+    <h2 class="splash-title">Arunika<span>-WA</span></h2>
+    <p class="splash-sub">WhatsApp API Gateway</p>
+    <div class="splash-bar"><div class="splash-bar-fill"></div></div>
 </div>
 
-<div class="ui container" id="app" style="display: none;">
-    <div class="main-header">
-        <h1 class="ui header center aligned">
-            <div class="title-container">
-                <img src="{{ .AppBasePath }}/assets/gowa.svg" alt="GoWA Logo">
-                
-                <span>WhatsApp API</span>
-                
-                <div class="version-label">
-                    {{ .AppVersion }}
+<!-- App Shell -->
+<div id="app" style="display:none">
+
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar" :class="{'open': sidebarOpen}">
+
+        <div class="sidebar-top">
+            <img src="{{ .AppBasePath }}/assets/arunika.svg" alt="" class="sidebar-logo-img">
+            <div class="sidebar-brand-text">
+                <span class="sidebar-brand-name">Arunika<span class="brand-accent">-WA</span></span>
+                <span class="sidebar-version">{{ .AppVersion }}</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-group">
+                <span class="nav-group-label">Overview</span>
+                <a class="nav-item" :class="{active: page==='dashboard'}" @click="go('dashboard')">
+                    <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                    Dashboard
+                </a>
+                <a class="nav-item" :class="{active: page==='devices'}" @click="go('devices')">
+                    <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18" stroke-linecap="round" stroke-width="3"/></svg>
+                    Perangkat
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <span class="nav-group-label">WhatsApp</span>
+                <a class="nav-item nav-primary" :class="{active: page==='qrlogin'}" @click="go('qrlogin')">
+                    <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+                    Scan & Login
+                </a>
+                <a class="nav-item" :class="{active: page==='send'}" @click="go('send')">
+                    <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    Kirim Pesan
+                </a>
+                <a class="nav-item" :class="{active: page==='message'}" @click="go('message')">
+                    <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    Aksi Pesan
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <span class="nav-group-label">Manajemen</span>
+                <a class="nav-item" :class="{active: page==='groups'}" @click="go('groups')">
+                    <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Grup
+                </a>
+                <a class="nav-item" :class="{active: page==='chats'}" @click="go('chats')">
+                    <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="13" y2="14"/></svg>
+                    Chat
+                </a>
+                <a class="nav-item" :class="{active: page==='account'}" @click="go('account')">
+                    <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Akun
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-device-pill" v-if="selectedDeviceId">
+                <span class="device-indicator" :class="isSelectedDeviceLoggedIn ? 'ind-on' : 'ind-off'"></span>
+                <span class="device-pill-text">[[ selectedDeviceId ]]</span>
+            </div>
+            <div class="sidebar-device-pill empty" v-else>
+                <span class="device-indicator ind-off"></span>
+                <span class="device-pill-text">Pilih perangkat</span>
+            </div>
+            <button class="btn-signout" v-if="authEnabled" @click="signOut">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Keluar
+            </button>
+        </div>
+    </aside>
+
+    <!-- Sidebar overlay (mobile) -->
+    <div class="sidebar-overlay" v-if="sidebarOpen" @click="sidebarOpen=false"></div>
+
+    <!-- ── Main area ── -->
+    <div class="main-area">
+
+        <!-- Top bar -->
+        <header class="topbar">
+            <button class="hamburger" @click="sidebarOpen=!sidebarOpen">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+
+            <div class="topbar-breadcrumb">
+                <span class="breadcrumb-app">Arunika-WA</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="color:#94A3B8"><polyline points="9 18 15 12 9 6"/></svg>
+                <span class="breadcrumb-page">
+                    <span v-if="page==='dashboard'">Dashboard</span>
+                    <span v-else-if="page==='devices'">Perangkat</span>
+                    <span v-else-if="page==='qrlogin'">Scan & Login</span>
+                    <span v-else-if="page==='send'">Kirim Pesan</span>
+                    <span v-else-if="page==='message'">Aksi Pesan</span>
+                    <span v-else-if="page==='groups'">Grup</span>
+                    <span v-else-if="page==='chats'">Chat</span>
+                    <span v-else-if="page==='account'">Akun</span>
+                </span>
+            </div>
+
+            <div class="topbar-right">
+                <!-- Device selector -->
+                <div class="device-selector-wrap" v-if="deviceList.length">
+                    <span class="ds-dot" :class="isSelectedDeviceLoggedIn ? 'ds-dot-on' : 'ds-dot-off'"></span>
+                    <select v-model="selectedDeviceId" @change="onDeviceChange" class="device-select">
+                        <option value="">Pilih perangkat</option>
+                        <option v-for="d in deviceList" :key="d.id||d.device" :value="d.id||d.device">
+                            [[ d.id||d.device ]]
+                        </option>
+                    </select>
                 </div>
             </div>
-        </h1>
-    </div>
+        </header>
 
-    <div class="ui info message" v-if="selectedDeviceId">
-        <div class="header">
-            <i class="linkify icon"></i>
-            Device context active
-        </div>
-        <p>
-            Using device: <b>[[ selectedDeviceId ]]</b>.
-            REST/WebSocket send <code>X-Device-Id</code> (or <code>?device_id=</code> for WS).
-        </p>
-    </div>
+        <!-- Content -->
+        <main class="content">
 
-    <device-manager 
-        ref="deviceManager"
-        ws-base-path="{{ .AppBasePath }}"
-        @device-selected="handleDeviceSelected"
-        @devices-updated="handleDevicesUpdated">
-    </device-manager>
+            <!-- ══ DASHBOARD ══ -->
+            <section v-show="page==='dashboard'" class="page">
+                <div class="page-head">
+                    <div>
+                        <h1 class="page-title">Dashboard</h1>
+                        <p class="page-desc">Ringkasan status perangkat dan koneksi WhatsApp Anda</p>
+                    </div>
+                    <button class="btn-action" @click="go('devices')">+ Tambah Perangkat</button>
+                </div>
 
-    <div class="ui horizontal divider">
-        App
-    </div>
+                <!-- Stats -->
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-num">[[ deviceList.length ]]</div>
+                        <div class="stat-lbl">Total Perangkat</div>
+                        <div class="stat-ico">📱</div>
+                    </div>
+                    <div class="stat-box stat-box-on">
+                        <div class="stat-num">[[ connectedCount ]]</div>
+                        <div class="stat-lbl">Terhubung</div>
+                        <div class="stat-ico">✅</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-num">[[ deviceList.length - connectedCount ]]</div>
+                        <div class="stat-lbl">Terputus</div>
+                        <div class="stat-ico">⭕</div>
+                    </div>
+                </div>
 
-    <div class="ui warning message" v-if="!selectedDeviceId">
-        <div class="header">Device required</div>
-        <p>Select or create a device above. Provide <code>X-Device-Id</code> on REST calls.</p>
-    </div>
+                <!-- Device list -->
+                <div class="card" v-if="deviceList.length">
+                    <div class="card-head">
+                        <h3>Status Perangkat</h3>
+                    </div>
+                    <div class="device-table">
+                        <div class="device-row" v-for="d in deviceList" :key="d.id||d.device">
+                            <div class="device-row-left">
+                                <span class="status-dot" :class="d.state==='logged_in'?'dot-on':d.state==='connecting'?'dot-wait':'dot-off'"></span>
+                                <div>
+                                    <div class="device-name">[[ d.id||d.device ]]</div>
+                                    <div class="device-jid" v-if="d.jid">[[ d.jid ]]</div>
+                                </div>
+                            </div>
+                            <div class="device-row-right">
+                                <span class="badge" :class="d.state==='logged_in'?'badge-on':d.state==='connecting'?'badge-wait':'badge-off'">
+                                    [[ d.state==='logged_in' ? 'Terhubung' : d.state==='connecting' ? 'Menghubungkan...' : 'Terputus' ]]
+                                </span>
+                                <button class="btn-sm" @click="selectAndGo(d.id||d.device,'qrlogin')" v-if="d.state!=='logged_in'">Login</button>
+                                <button class="btn-sm btn-sm-ghost" @click="selectAndGo(d.id||d.device,'send')" v-else>Kirim</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="ui three column stackable grid cards" :class="{disabled: !selectedDeviceId}">
-        <app-login :logged-in="isSelectedDeviceLoggedIn"></app-login>
-        <app-logout @reload-devices="handleReloadDevice"></app-logout>
-        <app-reconnect @reload-devices="handleReloadDevice"></app-reconnect>
-        <app-login-with-code :logged-in="isSelectedDeviceLoggedIn"></app-login-with-code>
-    </div>
+                <!-- Empty -->
+                <div class="empty-state" v-else>
+                    <div style="font-size:52px;margin-bottom:16px">📱</div>
+                    <h3>Belum ada perangkat</h3>
+                    <p>Buat perangkat pertama Anda untuk mulai menggunakan Arunika-WA</p>
+                    <button class="btn-action" @click="go('devices')">Buat Perangkat</button>
+                </div>
+            </section>
 
-    <div class="ui horizontal divider">
-        Send
-    </div>
+            <!-- ══ PERANGKAT ══ -->
+            <section v-show="page==='devices'" class="page">
+                <div class="page-head">
+                    <div>
+                        <h1 class="page-title">Perangkat</h1>
+                        <p class="page-desc">Kelola perangkat WhatsApp yang terdaftar</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <device-manager
+                        ref="deviceManager"
+                        ws-base-path="{{ .AppBasePath }}"
+                        @device-selected="handleDeviceSelected"
+                        @devices-updated="handleDevicesUpdated">
+                    </device-manager>
+                </div>
+            </section>
 
-    <div class="ui three column doubling grid cards">
-        <send-message></send-message>
-        <send-image></send-image>
-        <send-file max-file-size="{{ .MaxFileSize }}"></send-file>
+            <!-- ══ SCAN & LOGIN ══ -->
+            <section v-show="page==='qrlogin'" class="page">
+                <div class="page-head">
+                    <div>
+                        <h1 class="page-title">Scan & Login WhatsApp</h1>
+                        <p class="page-desc">Hubungkan akun WhatsApp ke perangkat ini</p>
+                    </div>
+                </div>
 
-        <send-video max-video-size="{{ .MaxVideoSize }}"></send-video>
-        <send-sticker></send-sticker>
-        <send-contact></send-contact>
+                <!-- No device -->
+                <div class="center-card" v-if="!selectedDeviceId">
+                    <div style="font-size:48px;margin-bottom:16px">📱</div>
+                    <h3>Pilih perangkat terlebih dahulu</h3>
+                    <p>Pilih atau buat perangkat dari menu dropdown di atas</p>
+                    <button class="btn-action" style="margin-top:20px" @click="go('devices')">Ke Perangkat</button>
+                </div>
 
-        <send-location></send-location>
-        <send-audio></send-audio>
-        <send-poll></send-poll>
-        
-        <send-presence></send-presence>
-        
-        <send-chat-presence></send-chat-presence>
-        <send-link></send-link>
-    </div>
+                <!-- Already logged in -->
+                <div class="center-card connected-card" v-else-if="isSelectedDeviceLoggedIn">
+                    <div style="font-size:52px;margin-bottom:12px">✅</div>
+                    <h3 style="color:#16a34a;font-size:20px">WhatsApp Terhubung!</h3>
+                    <p style="color:#64748b;margin:8px 0 24px">
+                        Perangkat <strong>[[ selectedDeviceId ]]</strong> aktif dan siap digunakan.
+                    </p>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+                        <button class="btn-action" @click="go('send')">Kirim Pesan</button>
+                        <button class="btn-outline-red" @click="doWaLogout">Putuskan</button>
+                        <button class="btn-outline" @click="doReconnect">Hubungkan ulang</button>
+                    </div>
+                </div>
 
-    <div class="ui horizontal divider">
-        Message
-    </div>
+                <!-- Login panel -->
+                <div v-else>
+                    <div class="login-tabs">
+                        <button class="ltab" :class="{active:loginTab==='qr'}" @click="switchLoginTab('qr')">
+                            📷 Scan QR Code
+                        </button>
+                        <button class="ltab" :class="{active:loginTab==='code'}" @click="switchLoginTab('code')">
+                            📞 Nomor Telepon
+                        </button>
+                    </div>
 
-    <div class="ui three column doubling grid cards">
-        <message-delete></message-delete>
-        <message-revoke></message-revoke>
-        <message-react></message-react>
-        <message-update></message-update>
-        <message-read></message-read>
-    </div>
+                    <!-- QR panel -->
+                    <div class="qr-layout" v-show="loginTab==='qr'">
+                        <div class="qr-image-box">
+                            <div class="qr-spinner" v-if="qrLoading">
+                                <div class="ui active large inline loader"></div>
+                                <p>Membuat QR code...</p>
+                            </div>
+                            <img v-else-if="qrLink" :src="qrLink" class="qr-img" alt="QR Code WhatsApp">
+                            <div class="qr-empty" v-else @click="fetchQR">
+                                <span style="font-size:40px">📷</span>
+                                <p>Klik untuk buat QR code</p>
+                            </div>
+                            <div class="qr-timer" v-if="qrLink && qrCountdown > 0">
+                                <span class="qr-timer-dot"></span>
+                                Kadaluarsa dalam <strong>[[ qrCountdown ]]</strong> detik
+                            </div>
+                            <div class="qr-timer" v-else-if="qrLink">
+                                <span class="qr-timer-dot dot-spin"></span>
+                                Memperbarui...
+                            </div>
+                        </div>
 
-    <div class="ui horizontal divider">
-        Group
-    </div>
+                        <div class="qr-guide">
+                            <h3>Cara Scan QR Code</h3>
+                            <div class="qr-steps">
+                                <div class="qr-step">
+                                    <span class="step-num">1</span>
+                                    <p>Buka aplikasi <strong>WhatsApp</strong> di HP Anda</p>
+                                </div>
+                                <div class="qr-step">
+                                    <span class="step-num">2</span>
+                                    <p>Ketuk <strong>Pengaturan</strong> → <strong>Perangkat Tertaut</strong></p>
+                                </div>
+                                <div class="qr-step">
+                                    <span class="step-num">3</span>
+                                    <p>Ketuk <strong>Tautkan Perangkat</strong></p>
+                                </div>
+                                <div class="qr-step">
+                                    <span class="step-num">4</span>
+                                    <p>Arahkan kamera ke QR code di sebelah kiri</p>
+                                </div>
+                            </div>
+                            <button class="btn-action" style="width:100%;margin-top:24px"
+                                    @click="fetchQR" :disabled="qrLoading">
+                                [[ qrLoading ? 'Memuat...' : '🔄 Perbarui QR Code' ]]
+                            </button>
+                        </div>
+                    </div>
 
-    <div class="ui three column doubling grid cards">
-        <group-list :connected="connected_devices"></group-list>
-        <group-create></group-create>
-        <group-join-with-link></group-join-with-link>
-        <group-info-from-link></group-info-from-link>
-        <group-add-participants></group-add-participants>
-        <group-set-photo></group-set-photo>
-        <group-set-name></group-set-name>
-        <group-set-locked></group-set-locked>
-        <group-set-announce></group-set-announce>
-        <group-set-topic></group-set-topic>
-        <group-get-invite-link></group-get-invite-link>
-        <group-info></group-info>
-    </div>
+                    <!-- Phone code panel -->
+                    <div class="card" v-show="loginTab==='code'" style="max-width:480px">
+                        <h3 style="margin-bottom:20px;font-size:16px;font-weight:700">Login dengan Nomor Telepon</h3>
+                        <div class="form-row">
+                            <label>Nomor telepon (dengan kode negara, tanpa +)</label>
+                            <input type="text" v-model="pairingPhone"
+                                   placeholder="Contoh: 6281234567890"
+                                   class="text-input">
+                        </div>
+                        <button class="btn-action" style="margin-top:12px"
+                                @click="fetchPairingCode" :disabled="pairingLoading||!pairingPhone">
+                            [[ pairingLoading ? 'Mendapatkan kode...' : 'Dapatkan Kode' ]]
+                        </button>
+                        <div class="pairing-box" v-if="pairingCode">
+                            <p>Masukkan kode ini di WhatsApp → Perangkat Tertaut → Tautkan dengan nomor telepon:</p>
+                            <div class="pairing-code">[[ pairingCode ]]</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <div class="ui horizontal divider">
-        Newsletter
-    </div>
+            <!-- ══ KIRIM PESAN ══ -->
+            <section v-show="page==='send'" class="page">
+                <div class="page-head">
+                    <div>
+                        <h1 class="page-title">Kirim Pesan</h1>
+                        <p class="page-desc">Kirim berbagai jenis pesan ke kontak atau grup</p>
+                    </div>
+                </div>
+                <div class="notice" v-if="!selectedDeviceId">Pilih perangkat dari dropdown di atas untuk mulai.</div>
 
-    <div class="ui three column doubling grid cards">
-        <newsletter-list></newsletter-list>
-    </div>
+                <div class="htabs">
+                    <button v-for="t in sendTabs" :key="t.key"
+                            class="htab" :class="{active:sendTab===t.key}"
+                            @click="sendTab=t.key">
+                        [[ t.icon ]] [[ t.label ]]
+                    </button>
+                </div>
+                <div class="ui three column doubling grid cards tab-content">
+                    <send-message v-show="sendTab==='text'"></send-message>
+                    <send-image v-show="sendTab==='image'"></send-image>
+                    <send-video v-show="sendTab==='video'" max-video-size="{{ .MaxVideoSize }}"></send-video>
+                    <send-file v-show="sendTab==='file'" max-file-size="{{ .MaxFileSize }}"></send-file>
+                    <send-audio v-show="sendTab==='audio'"></send-audio>
+                    <send-sticker v-show="sendTab==='sticker'"></send-sticker>
+                    <send-contact v-show="sendTab==='contact'"></send-contact>
+                    <send-location v-show="sendTab==='location'"></send-location>
+                    <send-link v-show="sendTab==='link'"></send-link>
+                    <send-poll v-show="sendTab==='poll'"></send-poll>
+                    <send-presence v-show="sendTab==='presence'"></send-presence>
+                    <send-chat-presence v-show="sendTab==='chatpresence'"></send-chat-presence>
+                </div>
+            </section>
 
-    <div class="ui horizontal divider">
-        Account
-    </div>
+            <!-- ══ AKSI PESAN ══ -->
+            <section v-show="page==='message'" class="page">
+                <div class="page-head">
+                    <div>
+                        <h1 class="page-title">Aksi Pesan</h1>
+                        <p class="page-desc">Balas, hapus, reaksi, atau tandai pesan</p>
+                    </div>
+                </div>
+                <div class="ui three column doubling grid cards">
+                    <message-delete></message-delete>
+                    <message-revoke></message-revoke>
+                    <message-react></message-react>
+                    <message-update></message-update>
+                    <message-read></message-read>
+                </div>
+            </section>
 
-    <div class="ui three column doubling grid cards">
-        <account-avatar></account-avatar>
-        <account-change-avatar></account-change-avatar>
-        <account-change-push-name></account-change-push-name>
-        <account-user-info></account-user-info>
-        <account-business-profile></account-business-profile>
-        <account-privacy></account-privacy>
-        <account-contact></account-contact>
-        <account-user-check></account-user-check>
-    </div>
+            <!-- ══ GRUP ══ -->
+            <section v-show="page==='groups'" class="page">
+                <div class="page-head">
+                    <div>
+                        <h1 class="page-title">Manajemen Grup</h1>
+                        <p class="page-desc">Buat, kelola, dan konfigurasi grup WhatsApp</p>
+                    </div>
+                </div>
+                <div class="htabs">
+                    <button v-for="t in groupTabs" :key="t.key"
+                            class="htab" :class="{active:groupTab===t.key}"
+                            @click="groupTab=t.key">
+                        [[ t.icon ]] [[ t.label ]]
+                    </button>
+                </div>
+                <div class="ui three column doubling grid cards tab-content">
+                    <template v-if="groupTab==='list'"><group-list :connected="connected_devices"></group-list></template>
+                    <template v-if="groupTab==='create'"><group-create></group-create></template>
+                    <template v-if="groupTab==='join'">
+                        <group-join-with-link></group-join-with-link>
+                        <group-info-from-link></group-info-from-link>
+                        <group-get-invite-link></group-get-invite-link>
+                    </template>
+                    <template v-if="groupTab==='info'"><group-info></group-info></template>
+                    <template v-if="groupTab==='participants'"><group-add-participants></group-add-participants></template>
+                    <template v-if="groupTab==='settings'">
+                        <group-set-photo></group-set-photo>
+                        <group-set-name></group-set-name>
+                        <group-set-topic></group-set-topic>
+                        <group-set-locked></group-set-locked>
+                        <group-set-announce></group-set-announce>
+                    </template>
+                </div>
+            </section>
 
-    <div class="ui horizontal divider">
-        Chat Management
-    </div>
+            <!-- ══ CHAT ══ -->
+            <section v-show="page==='chats'" class="page">
+                <div class="page-head">
+                    <div>
+                        <h1 class="page-title">Chat</h1>
+                        <p class="page-desc">Daftar chat, pesan, dan pengaturan percakapan</p>
+                    </div>
+                </div>
+                <div class="ui three column doubling grid cards">
+                    <chat-list></chat-list>
+                    <chat-messages></chat-messages>
+                    <chat-pin-manager></chat-pin-manager>
+                    <chat-disappearing-manager></chat-disappearing-manager>
+                </div>
+            </section>
 
-    <div class="ui three column doubling grid cards">
-        <chat-pin-manager></chat-pin-manager>
-        <chat-disappearing-manager></chat-disappearing-manager>
-        <chat-list></chat-list>
-        <chat-messages></chat-messages>
-    </div>
+            <!-- ══ AKUN ══ -->
+            <section v-show="page==='account'" class="page">
+                <div class="page-head">
+                    <div>
+                        <h1 class="page-title">Akun</h1>
+                        <p class="page-desc">Profil dan pengaturan akun WhatsApp</p>
+                    </div>
+                </div>
+                <div class="htabs">
+                    <button v-for="t in accountTabs" :key="t.key"
+                            class="htab" :class="{active:accountTab===t.key}"
+                            @click="accountTab=t.key">
+                        [[ t.icon ]] [[ t.label ]]
+                    </button>
+                </div>
+                <div class="ui three column doubling grid cards tab-content">
+                    <template v-if="accountTab==='profile'">
+                        <account-user-info></account-user-info>
+                        <account-change-push-name></account-change-push-name>
+                        <account-user-check></account-user-check>
+                    </template>
+                    <template v-if="accountTab==='avatar'">
+                        <account-avatar></account-avatar>
+                        <account-change-avatar></account-change-avatar>
+                    </template>
+                    <template v-if="accountTab==='settings'">
+                        <account-privacy></account-privacy>
+                        <account-business-profile></account-business-profile>
+                    </template>
+                    <template v-if="accountTab==='contacts'">
+                        <account-contact></account-contact>
+                    </template>
+                </div>
+            </section>
 
-</div>
+        </main>
+    </div><!-- end main-area -->
+</div><!-- end #app -->
+
+<!-- ── Global JS ── -->
 <script>
-    window.TYPEGROUP = "@g.us";
-    window.TYPEUSER = "@s.whatsapp.net";
+    window.TYPEGROUP      = "@g.us";
+    window.TYPEUSER       = "@s.whatsapp.net";
     window.TYPENEWSLETTER = "@newsletter";
-    window.TYPELID = "@lid";
-    window.TYPESTATUS = "status@broadcast";
-    window.showErrorInfo = (message) => {
-        $('body').toast({
-            position: 'bottom right',
-            title: 'Error',
-            message: message,
-            showProgress: 'bottom',
-            classProgress: 'red'
-        });
-    }
-    window.showSuccessInfo = (message) => {
-        $('body').toast({
-            position: 'bottom right',
-            title: 'Success',
-            message: message,
-            showProgress: 'bottom',
-            classProgress: 'green'
-        });
-    }
+    window.TYPELID        = "@lid";
+    window.TYPESTATUS     = "status@broadcast";
 
+    window.showErrorInfo = msg => {
+        $('body').toast({ position:'bottom right', title:'Error',
+            message: msg instanceof Error ? msg.message : String(msg),
+            showProgress:'bottom', classProgress:'red' });
+    };
+    window.showSuccessInfo = msg => {
+        $('body').toast({ position:'bottom right', title:'Berhasil',
+            message: String(msg), showProgress:'bottom', classProgress:'green' });
+    };
 
-    const baseHost = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}`;
+    const _base = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ':'+window.location.port : ''}`;
     const DEVICE_ID_HEADER = 'X-Device-Id';
-    window.http = axios.create({
-        baseURL: `${baseHost}{{ .AppBasePath }}`
-    });
+    window.http = axios.create({ baseURL: `${_base}{{ .AppBasePath }}` });
+
+    window.AUTH_ENABLED = {{ .AuthEnabled }};
+    if (window.AUTH_ENABLED) {
+        const _tok = localStorage.getItem('arunika_token');
+        if (!_tok) {
+            window.location.replace('{{ .AppBasePath }}/login');
+        } else {
+            window.http.defaults.headers.common['Authorization'] = 'Bearer ' + _tok;
+        }
+    }
+
     {{ if isEnableBasicAuth .BasicAuthToken }}
     window.http.defaults.headers.common['Authorization'] = "{{ .BasicAuthToken }}";
     {{ end }}
 </script>
+
 <script type="module">
-    import AppLogin from "{{ .AppBasePath }}/components/AppLogin.js";
-    import AppLoginWithCode from "{{ .AppBasePath }}/components/AppLoginWithCode.js";
-    import AppLogout from "{{ .AppBasePath }}/components/AppLogout.js";
-    import AppReconnect from "{{ .AppBasePath }}/components/AppReconnect.js";
-    import SendMessage from "{{ .AppBasePath }}/components/SendMessage.js";
-    import SendImage from "{{ .AppBasePath }}/components/SendImage.js";
-    import SendFile from "{{ .AppBasePath }}/components/SendFile.js";
-    import SendVideo from "{{ .AppBasePath }}/components/SendVideo.js";
-    import SendSticker from "{{ .AppBasePath }}/components/SendSticker.js";
-    import SendLink from "{{ .AppBasePath }}/components/SendLink.js";
-    import SendContact from "{{ .AppBasePath }}/components/SendContact.js";
-    import SendLocation from "{{ .AppBasePath }}/components/SendLocation.js";
-    import SendAudio from "{{ .AppBasePath }}/components/SendAudio.js";
-    import SendPoll from "{{ .AppBasePath }}/components/SendPoll.js";
-    import SendPresence from "{{ .AppBasePath }}/components/SendPresence.js";
-    import SendChatPresence from "{{ .AppBasePath }}/components/SendChatPresence.js";
-    import MessageDelete from "{{ .AppBasePath }}/components/MessageDelete.js";
-    import MessageUpdate from "{{ .AppBasePath }}/components/MessageUpdate.js";
-    import MessageReact from "{{ .AppBasePath }}/components/MessageReact.js";
-    import MessageRevoke from "{{ .AppBasePath }}/components/MessageRevoke.js";
-    import MessageRead from "{{ .AppBasePath }}/components/MessageRead.js";
-    import GroupList from "{{ .AppBasePath }}/components/GroupList.js";
-    import GroupCreate from "{{ .AppBasePath }}/components/GroupCreate.js";
-    import GroupJoinWithLink from "{{ .AppBasePath }}/components/GroupJoinWithLink.js";
-    import GroupInfoFromLink from "{{ .AppBasePath }}/components/GroupInfoFromLink.js";
+    import SendMessage        from "{{ .AppBasePath }}/components/SendMessage.js";
+    import SendImage          from "{{ .AppBasePath }}/components/SendImage.js";
+    import SendFile           from "{{ .AppBasePath }}/components/SendFile.js";
+    import SendVideo          from "{{ .AppBasePath }}/components/SendVideo.js";
+    import SendSticker        from "{{ .AppBasePath }}/components/SendSticker.js";
+    import SendLink           from "{{ .AppBasePath }}/components/SendLink.js";
+    import SendContact        from "{{ .AppBasePath }}/components/SendContact.js";
+    import SendLocation       from "{{ .AppBasePath }}/components/SendLocation.js";
+    import SendAudio          from "{{ .AppBasePath }}/components/SendAudio.js";
+    import SendPoll           from "{{ .AppBasePath }}/components/SendPoll.js";
+    import SendPresence       from "{{ .AppBasePath }}/components/SendPresence.js";
+    import SendChatPresence   from "{{ .AppBasePath }}/components/SendChatPresence.js";
+    import MessageDelete      from "{{ .AppBasePath }}/components/MessageDelete.js";
+    import MessageUpdate      from "{{ .AppBasePath }}/components/MessageUpdate.js";
+    import MessageReact       from "{{ .AppBasePath }}/components/MessageReact.js";
+    import MessageRevoke      from "{{ .AppBasePath }}/components/MessageRevoke.js";
+    import MessageRead        from "{{ .AppBasePath }}/components/MessageRead.js";
+    import GroupList          from "{{ .AppBasePath }}/components/GroupList.js";
+    import GroupCreate        from "{{ .AppBasePath }}/components/GroupCreate.js";
+    import GroupJoinWithLink  from "{{ .AppBasePath }}/components/GroupJoinWithLink.js";
+    import GroupInfoFromLink  from "{{ .AppBasePath }}/components/GroupInfoFromLink.js";
     import GroupAddParticipants from "{{ .AppBasePath }}/components/GroupManageParticipants.js";
-    import GroupSetPhoto from "{{ .AppBasePath }}/components/GroupSetPhoto.js";
-    import GroupSetName from "{{ .AppBasePath }}/components/GroupSetName.js";
-    import GroupSetLocked from "{{ .AppBasePath }}/components/GroupSetLocked.js";
-    import GroupSetAnnounce from "{{ .AppBasePath }}/components/GroupSetAnnounce.js";
-    import GroupSetTopic from "{{ .AppBasePath }}/components/GroupSetTopic.js";
+    import GroupSetPhoto      from "{{ .AppBasePath }}/components/GroupSetPhoto.js";
+    import GroupSetName       from "{{ .AppBasePath }}/components/GroupSetName.js";
+    import GroupSetLocked     from "{{ .AppBasePath }}/components/GroupSetLocked.js";
+    import GroupSetAnnounce   from "{{ .AppBasePath }}/components/GroupSetAnnounce.js";
+    import GroupSetTopic      from "{{ .AppBasePath }}/components/GroupSetTopic.js";
     import GroupGetInviteLink from "{{ .AppBasePath }}/components/GroupGetInviteLink.js";
-    import GroupInfo from "{{ .AppBasePath }}/components/GroupInfo.js";
-    import NewsletterList from "{{ .AppBasePath }}/components/NewsletterList.js";
-    import AccountAvatar from "{{ .AppBasePath }}/components/AccountAvatar.js";
+    import GroupInfo          from "{{ .AppBasePath }}/components/GroupInfo.js";
+    import AccountAvatar      from "{{ .AppBasePath }}/components/AccountAvatar.js";
     import AccountChangeAvatar from "{{ .AppBasePath }}/components/AccountChangeAvatar.js";
     import AccountChangePushName from "{{ .AppBasePath }}/components/AccountChangePushName.js";
-    import AccountUserInfo from "{{ .AppBasePath }}/components/AccountUserInfo.js";
-    import AccountPrivacy from "{{ .AppBasePath }}/components/AccountPrivacy.js";
-    import AccountContact from "{{ .AppBasePath }}/components/AccountContact.js";
-    import AccountUserCheck from "{{ .AppBasePath }}/components/AccountUserCheck.js";
+    import AccountUserInfo    from "{{ .AppBasePath }}/components/AccountUserInfo.js";
+    import AccountPrivacy     from "{{ .AppBasePath }}/components/AccountPrivacy.js";
+    import AccountContact     from "{{ .AppBasePath }}/components/AccountContact.js";
+    import AccountUserCheck   from "{{ .AppBasePath }}/components/AccountUserCheck.js";
     import AccountBusinessProfile from "{{ .AppBasePath }}/components/AccountBusinessProfile.js";
-    import ChatPinManager from "{{ .AppBasePath }}/components/ChatPinManager.js";
+    import ChatPinManager     from "{{ .AppBasePath }}/components/ChatPinManager.js";
     import ChatDisappearingManager from "{{ .AppBasePath }}/components/ChatDisappearingManager.js";
-    import ChatList from "{{ .AppBasePath }}/components/ChatList.js";
-    import ChatMessages from "{{ .AppBasePath }}/components/ChatMessages.js";
-    import DeviceManager from "{{ .AppBasePath }}/components/DeviceManager.js";
+    import ChatList           from "{{ .AppBasePath }}/components/ChatList.js";
+    import ChatMessages       from "{{ .AppBasePath }}/components/ChatMessages.js";
+    import DeviceManager      from "{{ .AppBasePath }}/components/DeviceManager.js";
 
-    const showErrorInfo = (message) => {
-        $('body').toast({
-            position: 'bottom right',
-            title: 'Error',
-            message: message,
-            showProgress: 'bottom',
-            classProgress: 'red'
-        });
-    }
-    const showSuccessInfo = (message) => {
-        $('body').toast({
-            position: 'bottom right',
-            title: 'Success',
-            message: message,
-            showProgress: 'bottom',
-            classProgress: 'green'
+    const AUTH_ENABLED = window.AUTH_ENABLED || false;
+    if (AUTH_ENABLED) {
+        const tok = localStorage.getItem('arunika_token');
+        if (tok) window.http.defaults.headers.common['Authorization'] = 'Bearer ' + tok;
+        window.http.interceptors.response.use(r => r, err => {
+            if (AUTH_ENABLED && err.response?.status === 401) {
+                localStorage.removeItem('arunika_token');
+                window.location.replace('{{ .AppBasePath }}/login');
+            }
+            return Promise.reject(err);
         });
     }
 
     Vue.createApp({
         components: {
-            AppLogin, AppLoginWithCode, AppLogout, AppReconnect,
-            SendMessage, SendImage, SendFile, SendVideo, SendSticker, SendLink, SendContact, SendLocation, SendAudio, SendPoll, SendPresence, SendChatPresence,
+            SendMessage, SendImage, SendFile, SendVideo, SendSticker, SendLink,
+            SendContact, SendLocation, SendAudio, SendPoll, SendPresence, SendChatPresence,
             MessageDelete, MessageUpdate, MessageReact, MessageRevoke, MessageRead,
-            GroupList, GroupCreate, GroupJoinWithLink, GroupInfoFromLink, GroupAddParticipants, GroupSetPhoto, GroupSetName, GroupSetLocked, GroupSetAnnounce, GroupSetTopic, GroupGetInviteLink, GroupInfo,
-            NewsletterList,
-            AccountAvatar, AccountUserInfo, AccountPrivacy, AccountChangeAvatar, AccountContact, AccountChangePushName, AccountUserCheck, AccountBusinessProfile,
+            GroupList, GroupCreate, GroupJoinWithLink, GroupInfoFromLink, GroupAddParticipants,
+            GroupSetPhoto, GroupSetName, GroupSetLocked, GroupSetAnnounce, GroupSetTopic,
+            GroupGetInviteLink, GroupInfo,
+            AccountAvatar, AccountChangeAvatar, AccountChangePushName, AccountUserInfo,
+            AccountPrivacy, AccountContact, AccountUserCheck, AccountBusinessProfile,
             ChatPinManager, ChatDisappearingManager, ChatList, ChatMessages,
-            DeviceManager
+            DeviceManager,
         },
         delimiters: ['[[', ']]'],
         data() {
             return {
-                app_ws: null,
+                authEnabled:       AUTH_ENABLED,
+                page:              'dashboard',
+                sidebarOpen:       false,
+                app_ws:            null,
+                deviceList:        [],
                 connected_devices: null,
-                deviceList: [],
-                selectedDeviceId: '',
-            }
+                selectedDeviceId:  '',
+                loginTab:          'qr',
+                qrLink:            '',
+                qrCountdown:       0,
+                qrLoading:         false,
+                qrTimer:           null,
+                pairingPhone:      '',
+                pairingCode:       '',
+                pairingLoading:    false,
+                sendTab:           'text',
+                groupTab:          'list',
+                accountTab:        'profile',
+                sendTabs: [
+                    {key:'text',icon:'💬',label:'Teks'},
+                    {key:'image',icon:'🖼️',label:'Gambar'},
+                    {key:'video',icon:'🎬',label:'Video'},
+                    {key:'file',icon:'📎',label:'File'},
+                    {key:'audio',icon:'🎵',label:'Audio'},
+                    {key:'sticker',icon:'🎭',label:'Stiker'},
+                    {key:'contact',icon:'👤',label:'Kontak'},
+                    {key:'location',icon:'📍',label:'Lokasi'},
+                    {key:'link',icon:'🔗',label:'Link'},
+                    {key:'poll',icon:'📊',label:'Polling'},
+                    {key:'presence',icon:'🟢',label:'Presence'},
+                    {key:'chatpresence',icon:'⌨️',label:'Chat Presence'},
+                ],
+                groupTabs: [
+                    {key:'list',icon:'📋',label:'Daftar'},
+                    {key:'create',icon:'➕',label:'Buat Grup'},
+                    {key:'join',icon:'🔗',label:'Gabung'},
+                    {key:'info',icon:'ℹ️',label:'Info'},
+                    {key:'participants',icon:'👥',label:'Anggota'},
+                    {key:'settings',icon:'⚙️',label:'Pengaturan'},
+                ],
+                accountTabs: [
+                    {key:'profile',icon:'👤',label:'Profil'},
+                    {key:'avatar',icon:'🖼️',label:'Foto'},
+                    {key:'settings',icon:'🔒',label:'Privasi'},
+                    {key:'contacts',icon:'📒',label:'Kontak'},
+                ],
+            };
         },
         computed: {
             selectedDevice() {
                 if (!this.selectedDeviceId) return null;
-                return this.deviceList.find(d => (d.id || d.device) === this.selectedDeviceId) || null;
+                return this.deviceList.find(d => (d.id||d.device) === this.selectedDeviceId) || null;
             },
             isSelectedDeviceLoggedIn() {
                 return this.selectedDevice?.state === 'logged_in';
             },
+            connectedCount() {
+                return this.deviceList.filter(d => d.state === 'logged_in').length;
+            },
+        },
+        watch: {
+            page(p) {
+                this.sidebarOpen = false;
+                if (p === 'qrlogin' && this.selectedDeviceId && !this.isSelectedDeviceLoggedIn) {
+                    this.fetchQR();
+                } else if (p !== 'qrlogin') {
+                    this.clearQRTimer();
+                }
+            },
+            selectedDeviceId() {
+                if (this.page === 'qrlogin' && this.selectedDeviceId && !this.isSelectedDeviceLoggedIn) {
+                    this.fetchQR();
+                }
+            },
         },
         methods: {
-            applyDeviceHeader(id) {
+            go(p) { this.page = p; },
+            selectAndGo(id, p) { this.setDevice(id); this.page = p; },
+
+            setDevice(id) {
+                this.selectedDeviceId = id;
                 if (id) {
                     window.http.defaults.headers.common[DEVICE_ID_HEADER] = encodeURIComponent(id);
+                    this.connectWS();
                 } else {
                     delete window.http.defaults.headers.common[DEVICE_ID_HEADER];
-                    if (this.app_ws) {
-                        this.app_ws.close();
-                        this.app_ws = null;
-                    }
+                    if (this.app_ws) { this.app_ws.close(); this.app_ws = null; }
                 }
             },
-            constructWebSocketURL() {
-                if (!this.selectedDeviceId) return '';
-                const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://';
-                const basePath = '{{ .AppBasePath }}';
-                const deviceQuery = encodeURIComponent(this.selectedDeviceId);
-                const pathPrefix = basePath || '';
-                return `${protocol}${location.host}${pathPrefix}/ws?device_id=${deviceQuery}`;
+            onDeviceChange() {
+                this.setDevice(this.selectedDeviceId);
+                this.clearQRTimer(); this.qrLink = ''; this.pairingCode = '';
             },
-            handleReloadDevice() {
-                if (this.$refs.deviceManager) {
-                    this.$refs.deviceManager.refresh();
-                }
-                if (this.app_ws) {
-                    this.app_ws.send(JSON.stringify({"code": "FETCH_DEVICES"}));
-                }
+            handleDeviceSelected(id) { this.setDevice(id); },
+            handleDevicesUpdated(devs) {
+                this.deviceList = devs;
+                this.connected_devices = devs;
             },
-            handleDeviceSelected(id) {
-                this.selectedDeviceId = id;
-                this.applyDeviceHeader(id);
-                if (id) {
-                    this.connectWebSocket();
-                }
-            },
-            handleDevicesUpdated(devices) {
-                this.deviceList = devices;
-                this.connected_devices = devices;
-            },
-            connectWebSocket() {
-                if (!this.selectedDeviceId) {
-                    return;
-                }
 
-                if (this.app_ws) {
-                    this.app_ws.close();
-                    this.app_ws = null;
-                }
-
-                const wsURL = this.constructWebSocketURL();
-                if (!wsURL) {
-                    return;
-                }
-
-                this.app_ws = new WebSocket(wsURL);
-
-                this.app_ws.onopen = (evt) => {
-                    this.handleReloadDevice();
-                };
-
-                this.app_ws.onerror = (error) => {
-                    console.error('WebSocket error:', error);
-                    // Only show error notification if the device is logged in
-                    if (this.isSelectedDeviceLoggedIn) {
-                        showErrorInfo('Connection error occurred. Please refresh or re-select the device.');
-                    }
-                };
-
-                this.app_ws.onmessage = (evt) => {
-                    const message = JSON.parse(evt.data)
-                    switch (message.code) {
+            connectWS() {
+                if (!this.selectedDeviceId) return;
+                if (this.app_ws) { this.app_ws.close(); this.app_ws = null; }
+                const proto = location.protocol === 'https:' ? 'wss://' : 'ws://';
+                const url = `${proto}${location.host}{{ .AppBasePath }}/ws?device_id=${encodeURIComponent(this.selectedDeviceId)}`;
+                this.app_ws = new WebSocket(url);
+                this.app_ws.onopen = () => this.reloadDevices();
+                this.app_ws.onerror = () => {};
+                this.app_ws.onmessage = evt => {
+                    const msg = JSON.parse(evt.data);
+                    switch (msg.code) {
                         case 'LOGIN_SUCCESS':
-                            showSuccessInfo(message.message)
-                            $('#modalLogin').modal('hide');
-
-                            // fetch devices
-                            this.handleReloadDevice()
+                            showSuccessInfo(msg.message || 'WhatsApp berhasil terhubung!');
+                            this.clearQRTimer(); this.qrLink = '';
+                            this.reloadDevices();
+                            this.page = 'dashboard';
                             break;
                         case 'LIST_DEVICES':
-                            this.connected_devices = message.result
-                            break;
+                            this.connected_devices = msg.result; break;
                         case 'LOGOUT_COMPLETE':
-                            // Handle successful cleanup after remote logout
-                            showSuccessInfo('✅ ' + message.message)
-                            console.log('[LOGOUT_COMPLETE] Remote logout cleanup completed:', message)
-                            // Optionally refresh the device list
-                            this.handleReloadDevice()
-                            break;
+                            showSuccessInfo(msg.message || 'Berhasil logout');
+                            this.reloadDevices(); break;
                         case 'DEVICE_REMOVED': {
-                            const removedId = message.result?.device_id;
-                            const devices = message.result?.devices;
-                            showSuccessInfo('✅ ' + (message.message || 'Device removed'));
-
-                            if (Array.isArray(devices)) {
-                                this.deviceList = devices;
-                                this.connected_devices = devices;
-
-                                if (removedId && this.selectedDeviceId === removedId) {
-                                    this.selectedDeviceId = '';
-                                    this.applyDeviceHeader('');
-                                }
-
-                                if (!this.selectedDeviceId && this.deviceList.length > 0) {
-                                    const first = this.deviceList[0].id || this.deviceList[0].device;
-                                    this.setDeviceContext(first);
-                                }
-                            } else {
-                                this.handleReloadDevice();
-                            }
+                            const rm = msg.result?.device_id;
+                            const devs = msg.result?.devices;
+                            showSuccessInfo(msg.message || 'Perangkat dihapus');
+                            if (Array.isArray(devs)) {
+                                this.deviceList = devs; this.connected_devices = devs;
+                                if (rm && this.selectedDeviceId === rm) this.setDevice('');
+                            } else this.reloadDevices();
                             break;
                         }
-                        default:
-                            console.log(message)
                     }
                 };
+            },
+            reloadDevices() {
+                if (this.$refs.deviceManager) this.$refs.deviceManager.refresh();
+                if (this.app_ws) this.app_ws.send(JSON.stringify({code:'FETCH_DEVICES'}));
+            },
+
+            switchLoginTab(tab) {
+                this.loginTab = tab;
+                if (tab === 'qr' && !this.qrLink && !this.isSelectedDeviceLoggedIn && this.selectedDeviceId) this.fetchQR();
+            },
+            async fetchQR() {
+                if (!this.selectedDeviceId) { showErrorInfo('Pilih perangkat terlebih dahulu'); return; }
+                this.qrLoading = true; this.clearQRTimer();
+                try {
+                    const r = await window.http.get('app/login');
+                    this.qrLink = r.data.results.qr_link;
+                    this.qrCountdown = r.data.results.qr_duration || 60;
+                    this.startQRTimer();
+                } catch (e) {
+                    showErrorInfo(e.response?.data?.message || e.message);
+                } finally { this.qrLoading = false; }
+            },
+            startQRTimer() {
+                this.clearQRTimer();
+                this.qrTimer = setInterval(() => {
+                    if (this.qrCountdown > 0) this.qrCountdown--;
+                    else this.fetchQR();
+                }, 1000);
+            },
+            clearQRTimer() {
+                if (this.qrTimer) { clearInterval(this.qrTimer); this.qrTimer = null; }
+            },
+            async fetchPairingCode() {
+                if (!this.pairingPhone) { showErrorInfo('Masukkan nomor telepon'); return; }
+                this.pairingLoading = true;
+                try {
+                    const r = await window.http.get(`app/login-with-code?phone=${this.pairingPhone}`);
+                    this.pairingCode = r.data.results?.pair_code || '';
+                } catch (e) {
+                    showErrorInfo(e.response?.data?.message || e.message);
+                } finally { this.pairingLoading = false; }
+            },
+            async doWaLogout() {
+                try {
+                    await window.http.get('app/logout');
+                    showSuccessInfo('WhatsApp terputus');
+                    this.reloadDevices();
+                } catch (e) { showErrorInfo(e.response?.data?.message || e.message); }
+            },
+            async doReconnect() {
+                try {
+                    await window.http.get('app/reconnect');
+                    showSuccessInfo('Menghubungkan ulang...');
+                    this.reloadDevices();
+                } catch (e) { showErrorInfo(e.response?.data?.message || e.message); }
+            },
+            async signOut() {
+                try { await window.http.post('auth/logout'); } catch (e) {}
+                localStorage.removeItem('arunika_token');
+                window.location.replace('{{ .AppBasePath }}/login');
             },
         },
         mounted() {
-            // Show app container and hide splash once initial data fetched
             setTimeout(() => {
-                document.getElementById('app').style.display = 'block';
-                document.getElementById('splash-screen').classList.add('fade-out');
-            }, 800);
+                document.getElementById('app').style.display = 'flex';
+                const s = document.getElementById('splash-screen');
+                if (s) s.classList.add('fade-out');
+            }, 900);
         },
-    }).mount('#app')
+        beforeUnmount() { this.clearQRTimer(); },
+    }).mount('#app');
 </script>
 </body>
 </html>

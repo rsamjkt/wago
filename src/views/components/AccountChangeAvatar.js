@@ -63,13 +63,11 @@ export default {
         }
     },
     template: `
-    <div class="olive card" @click="openModal()" style="cursor:pointer;">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui olive right ribbon label">Account</a>
-            <div class="header">Change Avatar</div>
-            <div class="description">
-                Update your profile picture
-            </div>
+            <a class="ui blue right ribbon label">Akun</a>
+            <div class="header">📷 Ubah Foto</div>
+            <div class="description">Ganti foto profil WhatsApp Anda</div>
         </div>
     </div>
     

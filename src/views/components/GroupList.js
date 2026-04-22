@@ -194,13 +194,11 @@ export default {
         }
     },
     template: `
-    <div class="green card" @click="openModal" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui green right ribbon label">Group</a>
-            <div class="header">List Groups</div>
-            <div class="description">
-                Display all your groups
-            </div>
+            <a class="ui blue right ribbon label">Grup</a>
+            <div class="header">📋 Daftar Grup</div>
+            <div class="description">Lihat semua grup yang Anda ikuti</div>
         </div>
     </div>
     
@@ -296,7 +294,7 @@ export default {
             </table>
         </div>
         <div class="actions">
-            <div class="ui button" @click="closeRequestedMembersModal">Close</div>
+            <div class="ui button" @click="closeRequestedMembersModal">Tutup</div>
         </div>
     </div>
     `

@@ -72,13 +72,11 @@ export default {
         },
     },
     template: `
-    <div class="red card" @click="openModal()" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui red right ribbon label">Message</a>
-            <div class="header">Revoke Message</div>
-            <div class="description">
-                 Revoke your own message, or any member's message in a group where you are admin
-            </div>
+            <a class="ui blue right ribbon label">Aksi</a>
+            <div class="header">↩️ Tarik Pesan</div>
+            <div class="description">Tarik kembali pesan dari semua pihak</div>
         </div>
     </div>
     
@@ -93,7 +91,7 @@ export default {
                 <FormRecipient v-model:type="type" v-model:phone="phone"/>
                 
                 <div class="field">
-                    <label> Message ID</label>
+                    <label>ID Pesan</label>
                     <input v-model="message_id" type="text" placeholder="Please enter the message id to revoke"
                            aria-label="message id">
                 </div>
@@ -102,7 +100,7 @@ export default {
         <div class="actions">
             <button class="ui approve positive right labeled icon button" :class="{'loading': this.loading, 'disabled': !isValidForm() || loading}"
                  @click="handleSubmit">
-                Send
+                Kirim
                 <i class="send icon"></i>
             </button>
         </div>

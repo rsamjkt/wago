@@ -54,13 +54,11 @@ export default {
         },
     },
     template: `
-    <div class="green card" @click="openModal" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui green right ribbon label">Group</a>
-            <div class="header">Set Group Locked</div>
-            <div class="description">
-                Lock/unlock group info editing for admins only
-            </div>
+            <a class="ui blue right ribbon label">Grup</a>
+            <div class="header">🔒 Kunci Grup</div>
+            <div class="description">Batasi edit info hanya untuk admin</div>
         </div>
     </div>
     

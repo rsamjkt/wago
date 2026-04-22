@@ -95,13 +95,11 @@ export default {
         }
     },
     template: `
-    <div class="green card" @click="openModal" style="cursor: pointer;">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui green right ribbon label">Group</a>
-            <div class="header">Group Info</div>
-            <div class="description">
-                Search detailed information about a group by ID
-            </div>
+            <a class="ui blue right ribbon label">Grup</a>
+            <div class="header">📄 Info Grup</div>
+            <div class="description">Detail dan informasi lengkap grup</div>
         </div>
     </div>
 

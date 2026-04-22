@@ -76,13 +76,11 @@ export default {
         },
     },
     template: `
-    <div class="red card" @click="openModal()" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui red right ribbon label">Message</a>
-            <div class="header">Update Message</div>
-            <div class="description">
-                Update your sent message
-            </div>
+            <a class="ui blue right ribbon label">Aksi</a>
+            <div class="header">✏️ Edit Pesan</div>
+            <div class="description">Perbarui isi pesan yang terkirim</div>
         </div>
     </div>
         
@@ -97,7 +95,7 @@ export default {
                 <FormRecipient v-model:type="type" v-model:phone="phone"/>
                 
                 <div class="field">
-                    <label>Message ID</label>
+                    <label>ID Pesan</label>
                     <input v-model="message_id" type="text" placeholder="Please enter your message id"
                            aria-label="message id">
                 </div>

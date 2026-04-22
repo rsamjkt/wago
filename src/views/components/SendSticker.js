@@ -113,15 +113,13 @@ export default {
         }
     },
     template: `
-    <div class="blue card" @click="openModal()" style="cursor:pointer;">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui blue right ribbon label">Send</a>
-            <div class="header">Send Sticker</div>
-            <div class="description">
-                Send sticker with automatic conversion to WebP format
-                <div class="ui blue horizontal label">jpg/jpeg/png/webp/gif</div>
-            </div>
+            <a class="ui blue right ribbon label">Kirim</a>
+            <div class="header">🎭 Kirim Stiker</div>
+            <div class="description">Stiker animasi atau gambar</div>
         </div>
+    </div>
     </div>
     
     <!--  Modal SendSticker  -->
@@ -145,14 +143,14 @@ export default {
                 </div>
                 
                 <div class="field" v-if="isShowAttributes()">
-                    <label>Is Forwarded</label>
+                    <label>Tandai Diteruskan</label>
                     <div class="ui toggle checkbox">
                         <input type="checkbox" aria-label="is forwarded" v-model="is_forwarded">
                         <label>Mark sticker as forwarded</label>
                     </div>
                 </div>
                 <div class="field">
-                    <label>Disappearing Duration (seconds)</label>
+                    <label>Pesan Hilang (detik)</label>
                     <input v-model.number="duration" type="number" min="0" placeholder="0 (no expiry)" aria-label="duration"/>
                 </div>
                 <div class="field">
@@ -181,7 +179,7 @@ export default {
             <button class="ui approve positive right labeled icon button" 
                  :class="{'loading': this.loading, 'disabled': !isValidForm() || loading}"
                  @click.prevent="handleSubmit">
-                Send
+                Kirim
                 <i class="send icon"></i>
             </button>
         </div>

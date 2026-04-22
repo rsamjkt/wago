@@ -106,11 +106,9 @@ export default {
     template: `
     <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui blue right ribbon label">Send</a>
-            <div class="header">Send Audio</div>
-            <div class="description">
-                Send audio to user or group
-            </div>
+            <a class="ui blue right ribbon label">Kirim</a>
+            <div class="header">🎵 Kirim Audio</div>
+            <div class="description">Kirim pesan suara atau musik</div>
         </div>
     </div>
     
@@ -124,7 +122,7 @@ export default {
             <form class="ui form">
                 <FormRecipient v-model:type="type" v-model:phone="phone"/>
                 <div class="field">
-                    <label>Is Forwarded</label>
+                    <label>Tandai Diteruskan</label>
                     <div class="ui toggle checkbox">
                         <input type="checkbox" aria-label="is forwarded" v-model="is_forwarded">
                         <label>Mark audio as forwarded</label>
@@ -138,7 +136,7 @@ export default {
                     </div>
                 </div>
                 <div class="field">
-                    <label>Disappearing Duration (seconds)</label>
+                    <label>Pesan Hilang (detik)</label>
                     <input v-model.number="duration" type="number" min="0" placeholder="0 (no expiry)" aria-label="duration"/>
                 </div>
                 <div class="field">
@@ -169,7 +167,7 @@ export default {
         <div class="actions">
             <button class="ui approve positive right labeled icon button" :class="{'loading': this.loading, 'disabled': !isValidForm() || loading}"
                  @click.prevent="handleSubmit">
-                Send
+                Kirim
                 <i class="send icon"></i>
             </button>
         </div>

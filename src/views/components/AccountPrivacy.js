@@ -28,13 +28,11 @@ export default {
         },
     },
     template: `
-    <div class="olive card" @click="openModal" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-        <a class="ui olive right ribbon label">Account</a>
-            <div class="header">My Privacy Setting</div>
-            <div class="description">
-                Get your privacy settings
-            </div>
+            <a class="ui blue right ribbon label">Akun</a>
+            <div class="header">🔒 Privasi</div>
+            <div class="description">Kelola pengaturan privasi akun</div>
         </div>
     </div>
     

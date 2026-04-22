@@ -104,15 +104,12 @@ export default {
     template: `
     <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui blue right ribbon label">Send</a>
-            <div class="header">Send File</div>
-            <div class="description">
-                Send any file up to
-                <div class="ui blue horizontal label">{{ maxFileSize }}</div>
-            </div>
+            <a class="ui blue right ribbon label">Kirim</a>
+            <div class="header">📎 Kirim File</div>
+            <div class="description">Unggah dokumen atau berkas</div>
         </div>
     </div>
-    
+
     <!--  Modal SendFile  -->
     <div class="ui small modal" id="modalSendFile">
         <i class="close icon"></i>
@@ -124,23 +121,23 @@ export default {
                 <FormRecipient v-model:type="type" v-model:phone="phone"/>
                 
                 <div class="field">
-                    <label>Caption</label>
+                    <label>Keterangan</label>
                     <textarea v-model="caption" placeholder="Type some caption (optional)..."
                               aria-label="caption"></textarea>
                 </div>
                 <div class="field" v-if="isShowAttributes()">
-                    <label>Is Forwarded</label>
+                    <label>Tandai Diteruskan</label>
                     <div class="ui toggle checkbox">
                         <input type="checkbox" aria-label="is forwarded" v-model="is_forwarded">
-                        <label>Mark file as forwarded</label>
+                        <label>Tandai sebagai file diteruskan</label>
                     </div>
                 </div>
                 <div class="field">
-                    <label>Disappearing Duration (seconds)</label>
+                    <label>Pesan Hilang (detik)</label>
                     <input v-model.number="duration" type="number" min="0" placeholder="0 (no expiry)" aria-label="duration"/>
                 </div>
                 <div class="field" style="padding-bottom: 30px">
-                    <label>File</label>
+                    <label>Pilih File</label>
                     <input type="file" style="display: none" id="file_file" @change="handleFileChange">
                     <label for="file_file" class="ui positive medium green left floated button" style="color: white">
                         <i class="ui upload icon"></i>
@@ -158,7 +155,7 @@ export default {
         <div class="actions">
             <button class="ui approve positive right labeled icon button" :class="{'loading': this.loading, 'disabled': !isValidForm() || loading}"
                  @click.prevent="handleSubmit">
-                Send
+                Kirim
                 <i class="send icon"></i>
             </button>
         </div>

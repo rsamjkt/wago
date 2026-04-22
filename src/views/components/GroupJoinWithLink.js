@@ -62,13 +62,11 @@ export default {
         },
     },
     template: `
-    <div class="green card" @click="openModal" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui green right ribbon label">Group</a>
-            <div class="header">Join Groups</div>
-            <div class="description">
-                Join group with invitation link
-            </div>
+            <a class="ui blue right ribbon label">Grup</a>
+            <div class="header">🔗 Gabung via Link</div>
+            <div class="description">Masuk grup dengan tautan undangan</div>
         </div>
     </div>
     

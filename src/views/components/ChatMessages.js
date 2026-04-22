@@ -456,13 +456,11 @@ export default {
     }
   },
   template: `
-    <div class="purple card" @click="openModal()" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui purple right ribbon label">Chat</a>
-            <div class="header">Chat Messages</div>
-            <div class="description">
-                View messages from specific chats with advanced filtering
-            </div>
+            <a class="ui blue right ribbon label">Chat</a>
+            <div class="header">📨 Pesan Chat</div>
+            <div class="description">Riwayat pesan percakapan</div>
         </div>
     </div>
     

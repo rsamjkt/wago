@@ -76,13 +76,11 @@ export default {
         }
     },
     template: `
-    <div class="olive card" @click="openModal" style="cursor: pointer;">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-        <a class="ui olive right ribbon label">Account</a>
-            <div class="header">Avatar</div>
-            <div class="description">
-                You can search someone avatar by phone
-            </div>
+            <a class="ui blue right ribbon label">Akun</a>
+            <div class="header">🖼️ Foto Profil</div>
+            <div class="description">Lihat foto profil kontak</div>
         </div>
     </div>
 

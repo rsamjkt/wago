@@ -97,13 +97,11 @@ export default {
         }
     },
     template: `
-    <div class="olive card" @click="openModal" style="cursor: pointer;">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-        <a class="ui olive right ribbon label">Account</a>
-            <div class="header">Business Profile</div>
-            <div class="description">
-                Get detailed business profile information
-            </div>
+            <a class="ui blue right ribbon label">Akun</a>
+            <div class="header">💼 Profil Bisnis</div>
+            <div class="description">Kelola informasi bisnis WhatsApp</div>
         </div>
     </div>
     

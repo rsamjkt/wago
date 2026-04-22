@@ -94,11 +94,9 @@ export default {
     template: `
     <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui blue right ribbon label">Send</a>
-            <div class="header">Send Contact</div>
-            <div class="description">
-                Send contact to user or group
-            </div>
+            <a class="ui blue right ribbon label">Kirim</a>
+            <div class="header">👤 Kirim Kontak</div>
+            <div class="description">Bagikan informasi kontak</div>
         </div>
     </div>
     
@@ -123,14 +121,14 @@ export default {
                            aria-label="contact phone">
                 </div>
                 <div class="field" v-if="isShowAttributes()">
-                    <label>Is Forwarded</label>
+                    <label>Tandai Diteruskan</label>
                     <div class="ui toggle checkbox">
                         <input type="checkbox" aria-label="is forwarded" v-model="is_forwarded">
                         <label>Mark contact as forwarded</label>
                     </div>
                 </div>
                 <div class="field">
-                    <label>Disappearing Duration (seconds)</label>
+                    <label>Pesan Hilang (detik)</label>
                     <input v-model.number="duration" type="number" min="0" placeholder="0 (no expiry)" aria-label="duration"/>
                 </div>
             </form>
@@ -138,7 +136,7 @@ export default {
         <div class="actions">
             <button class="ui approve positive right labeled icon button" :class="{'loading': this.loading, 'disabled': !isValidForm() || loading}"
                  @click.prevent="handleSubmit">
-                Send
+                Kirim
                 <i class="send icon"></i>
             </button>
         </div>

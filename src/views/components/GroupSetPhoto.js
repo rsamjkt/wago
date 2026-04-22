@@ -89,13 +89,11 @@ export default {
         },
     },
     template: `
-    <div class="green card" @click="openModal" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui green right ribbon label">Group</a>
-            <div class="header">Set Group Photo</div>
-            <div class="description">
-                Update or remove group profile picture
-            </div>
+            <a class="ui blue right ribbon label">Grup</a>
+            <div class="header">📷 Foto Grup</div>
+            <div class="description">Ubah foto profil grup WhatsApp</div>
         </div>
     </div>
     

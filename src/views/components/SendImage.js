@@ -131,15 +131,11 @@ export default {
         }
     },
     template: `
-    <div class="blue card" @click="openModal()" style="cursor:pointer;">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui blue right ribbon label">Send</a>
-            <div class="header">Send Image</div>
-            <div class="description">
-                Send image with
-                <div class="ui blue horizontal label">jpg/jpeg/png</div>
-                type
-            </div>
+            <a class="ui blue right ribbon label">Kirim</a>
+            <div class="header">🖼️ Kirim Gambar</div>
+            <div class="description">jpg · jpeg · png</div>
         </div>
     </div>
     
@@ -154,43 +150,43 @@ export default {
                 <FormRecipient v-model:type="type" v-model:phone="phone" :show-status="true"/>
                 
                 <div class="field">
-                    <label>Caption</label>
+                    <label>Keterangan</label>
                     <textarea v-model="caption" type="text" placeholder="Hello this is image caption"
                               aria-label="caption"></textarea>
                 </div>
                 <div class="field" v-if="isShowAttributes()">
-                    <label>View Once</label>
+                    <label>Sekali Lihat</label>
                     <div class="ui toggle checkbox">
                         <input type="checkbox" aria-label="view once" v-model="view_once">
-                        <label>Check for enable one time view</label>
+                        <label>Aktifkan tampil sekali</label>
                     </div>
                 </div>
                 <div class="field" v-if="isShowAttributes()">
-                    <label>Compress</label>
+                    <label>Kompres</label>
                     <div class="ui toggle checkbox">
                         <input type="checkbox" aria-label="compress" v-model="compress">
-                        <label>Check for compressing image to smaller size</label>
+                        <label>Kompres gambar ke ukuran lebih kecil</label>
                     </div>
                 </div>
                 <div class="field" v-if="isShowAttributes() && !view_once">
-                    <label>Is Forwarded</label>
+                    <label>Tandai Diteruskan</label>
                     <div class="ui toggle checkbox">
                         <input type="checkbox" aria-label="is forwarded" v-model="is_forwarded">
-                        <label>Mark image as forwarded</label>
+                        <label>Tandai sebagai gambar diteruskan</label>
                     </div>
                 </div>
                 <div class="field">
-                    <label>Disappearing Duration (seconds)</label>
+                    <label>Pesan Hilang (detik)</label>
                     <input v-model.number="duration" type="number" min="0" placeholder="0 (no expiry)" aria-label="duration"/>
                 </div>
                 <div class="field">
-                    <label>Image URL</label>
+                    <label>URL Gambar</label>
                     <input type="text" v-model="image_url" placeholder="https://example.com/image.jpg"
                            aria-label="image_url"/>
                 </div>
                 <div style="text-align: left; font-weight: bold; margin: 10px 0;">or you can upload image from your device</div>
                 <div class="field" style="padding-bottom: 30px">
-                    <label>Image</label>
+                    <label>Pilih Gambar</label>
                     <input type="file" style="display: none" id="file_image" accept="image/png,image/jpg,image/jpeg" @change="handleImageChange"/>
                     <label for="file_image" class="ui positive medium green left floated button" style="color: white">
                         <i class="ui upload icon"></i>
@@ -206,7 +202,7 @@ export default {
             <button class="ui approve positive right labeled icon button" 
                  :class="{'loading': this.loading, 'disabled': !isValidForm() || loading}"
                  @click.prevent="handleSubmit">
-                Send
+                Kirim
                 <i class="send icon"></i>
             </button>
         </div>

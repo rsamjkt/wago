@@ -143,17 +143,12 @@ export default {
     template: `
     <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui blue right ribbon label">Send</a>
-            <div class="header">Send Video</div>
-            <div class="description">
-                Send video
-                <div class="ui blue horizontal label">mp4</div>
-                up to
-                <div class="ui blue horizontal label">{{ maxVideoSize }}</div>
-            </div>
+            <a class="ui blue right ribbon label">Kirim</a>
+            <div class="header">🎬 Kirim Video</div>
+            <div class="description">Video mp4 ke kontak atau grup</div>
         </div>
     </div>
-    
+
     <!--  Modal SendVideo  -->
     <div class="ui small modal" id="modalSendVideo">
         <i class="close icon"></i>
@@ -165,50 +160,50 @@ export default {
                 <FormRecipient v-model:type="type" v-model:phone="phone" :show-status="true"/>
                 
                 <div class="field">
-                    <label>Caption</label>
+                    <label>Keterangan</label>
                     <textarea v-model="caption" placeholder="Type some caption (optional)..."
                               aria-label="caption"></textarea>
                 </div>
                 <div class="field" v-if="isShowAttributes()">
-                    <label>View Once</label>
+                    <label>Sekali Lihat</label>
                     <div class="ui toggle checkbox">
                         <input type="checkbox" aria-label="view once" v-model="view_once">
-                        <label>Check for enable one time view</label>
+                        <label>Aktifkan tampil sekali</label>
                     </div>
                 </div>
                 <div class="field" v-if="isShowAttributes()">
-                    <label>Compress</label>
+                    <label>Kompres</label>
                     <div class="ui toggle checkbox">
                         <input type="checkbox" aria-label="compress" v-model="compress">
-                        <label>Check for compressing video to smaller size</label>
+                        <label>Kompres video ke ukuran lebih kecil</label>
                     </div>
                 </div>
                 <div class="field" v-if="isShowAttributes()">
-                    <label>GIF Playback</label>
+                    <label>Putar sebagai GIF</label>
                     <div class="ui toggle checkbox">
                         <input type="checkbox" aria-label="gif playback" v-model="gif_playback">
-                        <label>Display video as GIF (looping, silent, autoplay)</label>
+                        <label>Tampilkan video sebagai GIF (looping, tanpa suara)</label>
                     </div>
                 </div>
                 <div class="field" v-if="isShowAttributes() && !view_once">
-                    <label>Is Forwarded</label>
+                    <label>Tandai Diteruskan</label>
                     <div class="ui toggle checkbox">
                         <input type="checkbox" aria-label="is forwarded" v-model="is_forwarded">
-                        <label>Mark video as forwarded</label>
+                        <label>Tandai sebagai video diteruskan</label>
                     </div>
                 </div>
                 <div class="field">
-                    <label>Disappearing Duration (seconds)</label>
+                    <label>Pesan Hilang (detik)</label>
                     <input v-model.number="duration" type="number" min="0" placeholder="0 (no expiry)" aria-label="duration"/>
                 </div>
                 <div class="field">
-                    <label>Video URL</label>
+                    <label>URL Video</label>
                     <input type="text" v-model="video_url" placeholder="https://example.com/sample.mp4"
                            aria-label="video_url" />
                 </div>
                 <div style="text-align: left; font-weight: bold; margin: 10px 0;" v-if="!video_url">or you can upload video from your device</div>
                 <div class="field" style="padding-bottom: 30px" v-if="!video_url">
-                    <label>Video</label>
+                    <label>Pilih Video</label>
                     <input type="file" style="display: none" accept="video/*" id="file_video" @change="handleFileChange">
                     <label for="file_video" class="ui positive medium green left floated button" style="color: white">
                         <i class="ui upload icon"></i>
@@ -227,7 +222,7 @@ export default {
             <button class="ui approve positive right labeled icon button" 
                  :class="{'loading': loading, 'disabled': !isValidForm() || loading}"
                  @click.prevent="handleSubmit">
-                Send
+                Kirim
                 <i class="send icon"></i>
             </button>
         </div>

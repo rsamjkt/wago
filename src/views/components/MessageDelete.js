@@ -76,13 +76,11 @@ export default {
         },
     },
     template: `
-    <div class="red card" @click="openModal()" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui red right ribbon label">Message</a>
-            <div class="header">Delete Message</div>
-            <div class="description">
-                Delete your sent message
-            </div>
+            <a class="ui blue right ribbon label">Aksi</a>
+            <div class="header">🗑️ Hapus Pesan</div>
+            <div class="description">Hapus pesan yang telah terkirim</div>
         </div>
     </div>
         
@@ -97,7 +95,7 @@ export default {
                 <FormRecipient v-model:type="type" v-model:phone="phone"/>
                 
                 <div class="field">
-                    <label>Message ID</label>
+                    <label>ID Pesan</label>
                     <input v-model="message_id" type="text" placeholder="Please enter your message id"
                            aria-label="message id">
                 </div>
@@ -106,7 +104,7 @@ export default {
         <div class="actions">
             <button class="ui approve positive right labeled icon button" :class="{'loading': this.loading, 'disabled': !isValidForm() || loading}"
                  @click.prevent="handleSubmit">
-                Delete
+                Hapus
                 <i class="send icon"></i>
             </button>
         </div>

@@ -82,13 +82,11 @@ export default {
         },
     },
     template: `
-    <div class="green card" @click="openModal" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui green right ribbon label">Group</a>
-            <div class="header">Create Groups</div>
-            <div class="description">
-                Add more friends to your group
-            </div>
+            <a class="ui blue right ribbon label">Grup</a>
+            <div class="header">➕ Buat Grup</div>
+            <div class="description">Tambah grup WhatsApp baru</div>
         </div>
     </div>
     
@@ -101,14 +99,14 @@ export default {
         <div class="content">
             <form class="ui form">
                 <div class="field">
-                    <label>Group Name</label>
+                    <label>Nama Grup</label>
                     <input v-model="title" type="text"
                            placeholder="Group Name..."
                            aria-label="Group Name">
                 </div>
                 
                 <div class="field">
-                    <label>Participants</label>
+                    <label>Anggota</label>
                     <div style="display: flex; flex-direction: column; gap: 5px">
                         <div class="ui action input" :key="index" v-for="(participant, index) in participants">
                             <input type="number" placeholder="Phone Int Number (6289...)" v-model="participants[index]"
@@ -132,7 +130,7 @@ export default {
         <div class="actions">
             <button class="ui approve positive right labeled icon button" :class="{'loading': this.loading, 'disabled': !this.isValidForm() || this.loading}"
                  @click.prevent="handleSubmit" type="button">
-                Create
+                Buat
                 <i class="send icon"></i>
             </button>
         </div>

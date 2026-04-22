@@ -37,11 +37,11 @@ export default {
     },
     mounted() {
         this.recipientTypes = [
-            { value: window.TYPEUSER, text: 'Private Message' },
-            { value: window.TYPEGROUP, text: 'Group Message' },
+            { value: window.TYPEUSER, text: 'Pesan Pribadi' },
+            { value: window.TYPEGROUP, text: 'Pesan Grup' },
             { value: window.TYPENEWSLETTER, text: 'Newsletter' },
-            { value: window.TYPELID, text: 'LID (Linked ID)' },
-            { value: window.TYPESTATUS, text: 'Status' }
+            { value: window.TYPELID, text: 'LID (ID Terhubung)' },
+            { value: window.TYPESTATUS, text: 'Status WA' }
         ];
     },
     methods: {
@@ -57,16 +57,16 @@ export default {
     },
     template: `
     <div class="field">
-        <label>Type</label>
+        <label>Tipe Penerima</label>
         <select name="type" @change="updateType" class="ui dropdown">
             <option v-for="type in filteredRecipientTypes" :value="type.value">{{ type.text }}</option>
         </select>
     </div>
-    
+
     <div v-if="showPhoneInput" class="field">
-        <label>Phone / Group ID</label>
-        <input :value="phone" aria-label="wa identifier" @input="updatePhone">
-        <input :value="phone_id" disabled aria-label="whatsapp_id">
+        <label>Nomor / ID Grup</label>
+        <input :value="phone" aria-label="wa identifier" @input="updatePhone" placeholder="628xxx atau ID grup">
+        <input :value="phone_id" disabled aria-label="whatsapp_id" style="margin-top:4px;opacity:0.6;font-size:12px">
     </div>
     `
 }

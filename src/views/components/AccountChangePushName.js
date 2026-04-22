@@ -54,13 +54,11 @@ export default {
         }
     },
     template: `
-    <div class="olive card" @click="openModal()" style="cursor:pointer;">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui olive right ribbon label">Account</a>
-            <div class="header">Change Push Name</div>
-            <div class="description">
-                Update your WhatsApp display name
-            </div>
+            <a class="ui blue right ribbon label">Akun</a>
+            <div class="header">✏️ Ubah Nama</div>
+            <div class="description">Ganti nama tampilan akun</div>
         </div>
     </div>
     

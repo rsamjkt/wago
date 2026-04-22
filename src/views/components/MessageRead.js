@@ -75,13 +75,11 @@ export default {
         },
     },
     template: `
-    <div class="red card" @click="openModal()" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui red right ribbon label">Message</a>
-            <div class="header">Mark as Read</div>
-            <div class="description">
-                Mark a message as read in a chat
-            </div>
+            <a class="ui blue right ribbon label">Aksi</a>
+            <div class="header">✅ Tandai Dibaca</div>
+            <div class="description">Kirim tanda sudah dibaca</div>
         </div>
     </div>
         
@@ -96,7 +94,7 @@ export default {
                 <FormRecipient v-model:type="type" v-model:phone="phone"/>
                 
                 <div class="field">
-                    <label>Message ID</label>
+                    <label>ID Pesan</label>
                     <input v-model="message_id" type="text" placeholder="Please enter the message id to mark as read"
                            aria-label="message id">
                 </div>

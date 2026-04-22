@@ -54,13 +54,11 @@ export default {
         },
     },
     template: `
-    <div class="green card" @click="openModal" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui green right ribbon label">Group</a>
-            <div class="header">Set Group Topic</div>
-            <div class="description">
-                Set or remove group description/topic
-            </div>
+            <a class="ui blue right ribbon label">Grup</a>
+            <div class="header">📝 Deskripsi Grup</div>
+            <div class="description">Atur topik atau deskripsi grup</div>
         </div>
     </div>
     

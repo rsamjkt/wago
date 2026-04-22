@@ -67,13 +67,11 @@ export default {
         },
     },
     template: `
-    <div class="purple card" @click="openModal()" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui purple right ribbon label">Chat</a>
-            <div class="header">Pin Chat</div>
-            <div class="description">
-                Pin or unpin chats to the top of the list
-            </div>
+            <a class="ui blue right ribbon label">Chat</a>
+            <div class="header">📌 Sematkan Chat</div>
+            <div class="description">Kelola chat yang disematkan</div>
         </div>
     </div>
     

@@ -54,13 +54,11 @@ export default {
         },
     },
     template: `
-    <div class="green card" @click="openModal" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui green right ribbon label">Group</a>
-            <div class="header">Set Group Name</div>
-            <div class="description">
-                Change the group name/title
-            </div>
+            <a class="ui blue right ribbon label">Grup</a>
+            <div class="header">✏️ Nama Grup</div>
+            <div class="description">Ubah nama tampilan grup</div>
         </div>
     </div>
     
@@ -80,7 +78,7 @@ export default {
                 </div>
                 
                 <div class="field">
-                    <label>Group Name</label>
+                    <label>Nama Grup</label>
                     <input v-model="name" type="text"
                            placeholder="Enter new group name..."
                            maxlength="25"

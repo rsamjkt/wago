@@ -60,11 +60,9 @@ export default {
     template: `
     <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui blue right ribbon label">Send</a>
-            <div class="header">Send Chat Presence</div>
-            <div class="description">
-                Send <div class="ui green horizontal label">typing</div> indicators to specific chat
-            </div>
+            <a class="ui blue right ribbon label">Status</a>
+            <div class="header">⌨️ Chat Presence</div>
+            <div class="description">Simulasikan sedang mengetik</div>
         </div>
     </div>
     
@@ -90,7 +88,7 @@ export default {
             <button class="ui approve positive right labeled icon button" 
                  :class="{'loading': loading, 'disabled': loading}"
                  @click.prevent="handleSubmit">
-                Send
+                Kirim
                 <i class="send icon"></i>
             </button>
         </div>

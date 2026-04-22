@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Arunika-WA — Sign In</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0F172A;
+        }
+
+        /* ── Left brand panel ── */
+        .brand-panel {
+            width: 45%;
+            background: linear-gradient(160deg, #0F172A 0%, #1E293B 60%, #0F172A 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 60px 56px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-panel::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(251,191,36,0.12) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+        }
+
+        .brand-panel::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%);
+            bottom: -50px;
+            left: -50px;
+        }
+
+        .brand-logo {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 40px;
+        }
+
+        .brand-logo img {
+            width: 56px;
+            height: 56px;
+        }
+
+        .brand-name {
+            position: relative;
+            z-index: 1;
+            font-size: 36px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .brand-name span {
+            background: linear-gradient(135deg, #FBBF24, #F97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .brand-tagline {
+            position: relative;
+            z-index: 1;
+            color: #94A3B8;
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 280px;
+        }
+
+        .brand-features {
+            position: relative;
+            z-index: 1;
+            margin-top: 48px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .brand-feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #64748B;
+            font-size: 14px;
+        }
+
+        .brand-feature-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FBBF24, #F97316);
+            flex-shrink: 0;
+        }
+
+        /* ── Right form panel ── */
+        .form-panel {
+            flex: 1;
+            background: #F8FAFC;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 32px;
+        }
+
+        .form-box {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-heading {
+            margin-bottom: 32px;
+        }
+
+        .form-heading h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0F172A;
+            letter-spacing: -0.5px;
+        }
+
+        .form-heading p {
+            color: #64748B;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 12px;
+            font-size: 15px;
+            color: #0F172A;
+            background: white;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .input-wrap input:focus {
+            border-color: #F97316;
+            box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94A3B8;
+            font-size: 16px;
+            pointer-events: none;
+        }
+
+        .btn-signin {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
+            box-shadow: 0 4px 16px rgba(249,115,22,0.35);
+            letter-spacing: 0.2px;
+            margin-top: 4px;
+        }
+
+        .btn-signin:hover {
+            opacity: 0.92;
+            box-shadow: 0 6px 20px rgba(249,115,22,0.4);
+        }
+
+        .btn-signin:active { transform: scale(0.99); }
+        .btn-signin:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .error-alert {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            background: #FEF2F2;
+            color: #DC2626;
+            border: 1px solid #FECACA;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 13.5px;
+            margin-top: 16px;
+        }
+
+        .error-alert.show { display: flex; }
+
+        .version-note {
+            text-align: center;
+            color: #94A3B8;
+            font-size: 12px;
+            margin-top: 32px;
+        }
+
+        /* ── Mobile responsive ── */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .brand-panel {
+                width: 100%;
+                padding: 40px 28px 32px;
+                align-items: center;
+                text-align: center;
+            }
+            .brand-tagline { max-width: 100%; }
+            .brand-features { display: none; }
+            .brand-name { font-size: 28px; }
+            .form-panel { padding: 32px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Left: Brand panel -->
+    <div class="brand-panel">
+        <div class="brand-logo">
+            <img src="{{ .AppBasePath }}/assets/arunika.svg" alt="Arunika-WA">
+        </div>
+        <h1 class="brand-name">Arunika<span>-WA</span></h1>
+        <p class="brand-tagline">
+            WhatsApp API gateway yang powerful untuk otomasi bisnis Anda.
+        </p>
+        <div class="brand-features">
+            <div class="brand-feature">
+                <span class="brand-feature-dot"></span>
+                Multi-device management
+            </div>
+            <div class="brand-feature">
+                <span class="brand-feature-dot"></span>
+                REST API & MCP Protocol
+            </div>
+            <div class="brand-feature">
+                <span class="brand-feature-dot"></span>
+                Webhook & Chatwoot integration
+            </div>
+            <div class="brand-feature">
+                <span class="brand-feature-dot"></span>
+                Send text, media, polls & more
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Form panel -->
+    <div class="form-panel">
+        <div class="form-box">
+            <div class="form-heading">
+                <h2>Selamat datang 👋</h2>
+                <p>Masuk ke dashboard Arunika-WA Anda</p>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-wrap">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="username" placeholder="Masukkan username"
+                           autocomplete="username" autofocus>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrap">
+                    <span class="input-icon">🔑</span>
+                    <input type="password" id="password" placeholder="Masukkan password"
+                           autocomplete="current-password">
+                </div>
+            </div>
+
+            <button class="btn-signin" id="signinBtn" onclick="doSignIn()">
+                Masuk ke Dashboard
+            </button>
+
+            <div class="error-alert" id="errorAlert">
+                <span>⚠️</span>
+                <span id="errorMsg"></span>
+            </div>
+
+            <div class="version-note">Arunika-WA {{ .AppVersion }}</div>
+        </div>
+    </div>
+
+    <script>
+        const BASE = '{{ .AppBasePath }}';
+        const API  = BASE || '';
+
+        // Skip login if already authenticated
+        const tok = localStorage.getItem('arunika_token');
+        if (tok) {
+            fetch(API + '/auth/verify', {
+                headers: { 'Authorization': 'Bearer ' + tok }
+            }).then(r => {
+                if (r.ok) window.location.replace(BASE || '/');
+            }).catch(() => {});
+        }
+
+        document.getElementById('username').addEventListener('keydown', e => {
+            if (e.key === 'Enter') document.getElementById('password').focus();
+        });
+        document.getElementById('password').addEventListener('keydown', e => {
+            if (e.key === 'Enter') doSignIn();
+        });
+
+        async function doSignIn() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('signinBtn');
+            clearError();
+
+            if (!username || !password) {
+                showError('Mohon isi username dan password.');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Sedang masuk...';
+
+            try {
+                const resp = await fetch(API + '/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await resp.json();
+                if (!resp.ok) {
+                    showError(data.message || 'Username atau password salah.');
+                    return;
+                }
+                localStorage.setItem('arunika_token', data.results.token);
+                window.location.replace(BASE || '/');
+            } catch (e) {
+                showError('Gagal terhubung ke server. Silakan coba lagi.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Masuk ke Dashboard';
+            }
+        }
+
+        function showError(msg) {
+            document.getElementById('errorMsg').textContent = msg;
+            document.getElementById('errorAlert').classList.add('show');
+        }
+
+        function clearError() {
+            document.getElementById('errorAlert').classList.remove('show');
+        }
+    </script>
+</body>
+</html>

@@ -102,11 +102,9 @@ export default {
     template: `
     <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui blue right ribbon label">Send</a>
-            <div class="header">Send Poll</div>
-            <div class="description">
-                Send a poll/vote with multiple options
-            </div>
+            <a class="ui blue right ribbon label">Kirim</a>
+            <div class="header">📊 Kirim Polling</div>
+            <div class="description">Buat dan kirim survei pilihan</div>
         </div>
     </div>
     
@@ -151,7 +149,7 @@ export default {
                     </div>
                 </div>
                 <div class="field">
-                    <label>Disappearing Duration (seconds)</label>
+                    <label>Pesan Hilang (detik)</label>
                     <input v-model.number="duration" type="number" min="0" placeholder="0 (no expiry)" aria-label="duration"/>
                 </div>
             </form>
@@ -159,7 +157,7 @@ export default {
         <div class="actions">
             <button class="ui approve positive right labeled icon button" :class="{'loading': this.loading, 'disabled': !isValidForm() || loading}"
                  @click.prevent="handleSubmit">
-                Send
+                Kirim
                 <i class="send icon"></i>
             </button>
         </div>

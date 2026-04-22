@@ -116,13 +116,11 @@ export default {
         }
     },
     template: `
-    <div class="purple card" @click="openModal()" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui purple right ribbon label">Chat</a>
-            <div class="header">Chat List</div>
-            <div class="description">
-                View all chats with search and pagination
-            </div>
+            <a class="ui blue right ribbon label">Chat</a>
+            <div class="header">💬 Daftar Chat</div>
+            <div class="description">Semua percakapan aktif Anda</div>
         </div>
     </div>
 

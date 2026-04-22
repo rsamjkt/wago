@@ -58,13 +58,11 @@ export default {
         }
     },
     template: `
-    <div class="olive card" @click="openModal" style="cursor: pointer;">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui olive right ribbon label">Account</a>
-            <div class="header">User Check</div>
-            <div class="description">
-                Check if a user is on WhatsApp
-            </div>
+            <a class="ui blue right ribbon label">Akun</a>
+            <div class="header">🔍 Cek Pengguna</div>
+            <div class="description">Periksa nomor di WhatsApp</div>
         </div>
     </div>
     

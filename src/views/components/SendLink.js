@@ -96,11 +96,9 @@ export default {
     template: `
     <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui blue right ribbon label">Send</a>
-            <div class="header">Send Link</div>
-            <div class="description">
-                Send link to user or group
-            </div>
+            <a class="ui blue right ribbon label">Kirim</a>
+            <div class="header">🔗 Kirim Link</div>
+            <div class="description">Tautan dengan pratinjau otomatis</div>
         </div>
     </div>
     
@@ -114,7 +112,7 @@ export default {
             <form class="ui form">
                 <FormRecipient v-model:type="type" v-model:phone="phone" :show-status="true"/>
                 <div class="field" v-if="isShowReplyId()">
-                    <label>Reply Message ID</label>
+                    <label>ID Pesan Balasan (opsional)</label>
                     <input v-model="reply_message_id" type="text"
                            placeholder="Optional: 57D29F74B7FC62F57D8AC2C840279B5B/3EB0288F008D32FCD0A424"
                            aria-label="reply_message_id">
@@ -125,19 +123,19 @@ export default {
                            aria-label="link">
                 </div>
                 <div class="field">
-                    <label>Caption</label>
+                    <label>Keterangan</label>
                     <textarea v-model="caption" placeholder="Hello this is caption"
                               aria-label="caption"></textarea>
                 </div>
                 <div class="field" v-if="isShowReplyId()">
-                    <label>Is Forwarded</label>
+                    <label>Tandai Diteruskan</label>
                     <div class="ui toggle checkbox">
                         <input type="checkbox" aria-label="is forwarded" v-model="is_forwarded">
                         <label>Mark link as forwarded</label>
                     </div>
                 </div>
                 <div class="field">
-                    <label>Disappearing Duration (seconds)</label>
+                    <label>Pesan Hilang (detik)</label>
                     <input v-model.number="duration" type="number" min="0" placeholder="0 (no expiry)" aria-label="duration"/>
                 </div>
             </form>
@@ -146,7 +144,7 @@ export default {
             <button class="ui approve positive right labeled icon button" 
                  :class="{'disabled': !isValidForm() || loading}"
                  @click.prevent="handleSubmit">
-                Send
+                Kirim
                 <i class="send icon"></i>
             </button>
         </div>

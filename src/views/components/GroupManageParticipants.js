@@ -100,13 +100,11 @@ export default {
         },
     },
     template: `
-    <div class="green card" @click="openModal" style="cursor: pointer">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui green right ribbon label">Group</a>
-            <div class="header">Manage Participants</div>
-            <div class="description">
-                Add/Remove/Promote/Demote Participants
-            </div>
+            <a class="ui blue right ribbon label">Grup</a>
+            <div class="header">👥 Kelola Anggota</div>
+            <div class="description">Tambah atau hapus anggota grup</div>
         </div>
     </div>
     
@@ -127,7 +125,7 @@ export default {
                 </div>
                 
                 <div class="field">
-                    <label>Participants</label>
+                    <label>Anggota</label>
                     <div style="display: flex; flex-direction: column; gap: 5px">
                         <div class="ui action input" :key="index" v-for="(participant, index) in participants">
                             <input type="number" placeholder="Phone Int Number (6289...)" v-model="participants[index]"

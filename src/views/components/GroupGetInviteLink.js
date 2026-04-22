@@ -147,13 +147,11 @@ export default {
         }
     },
     template: `
-    <div class="green card" @click="openModal" style="cursor: pointer;">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui green right ribbon label">Group</a>
-            <div class="header">Get Group Invite Link</div>
-            <div class="description">
-                Get invite link for a group
-            </div>
+            <a class="ui blue right ribbon label">Grup</a>
+            <div class="header">🔑 Link Undangan</div>
+            <div class="description">Dapatkan tautan undangan grup</div>
         </div>
     </div>
 

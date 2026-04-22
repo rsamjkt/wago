@@ -84,13 +84,11 @@ export default {
         }
     },
     template: `
-    <div class="olive card" @click="openModal" style="cursor: pointer;">
+    <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-        <a class="ui olive right ribbon label">Account</a>
-            <div class="header">User Info</div>
-            <div class="description">
-                You can search someone user info by phone or LID
-            </div>
+            <a class="ui blue right ribbon label">Akun</a>
+            <div class="header">👤 Info Akun</div>
+            <div class="description">Detail informasi akun WhatsApp</div>
         </div>
     </div>
 

@@ -103,11 +103,9 @@ export default {
     template: `
     <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui blue right ribbon label">Send</a>
-            <div class="header">Send Message</div>
-            <div class="description">
-                Send any message to user or group
-            </div>
+            <a class="ui blue right ribbon label">Kirim</a>
+            <div class="header">💬 Kirim Pesan</div>
+            <div class="description">Kirim pesan teks ke kontak atau grup</div>
         </div>
     </div>
     
@@ -121,32 +119,32 @@ export default {
             <form class="ui form">
                 <FormRecipient v-model:type="type" v-model:phone="phone" :show-status="true"/>
                 <div class="field" v-if="isShowReplyId()">
-                    <label>Reply Message ID</label>
+                    <label>ID Pesan Balasan (opsional)</label>
                     <input v-model="reply_message_id" type="text"
                            placeholder="Optional: 57D29F74B7FC62F57D8AC2C840279B5B/3EB0288F008D32FCD0A424"
                            aria-label="reply_message_id">
                 </div>
                 <div class="field">
-                    <label>Message</label>
+                    <label>Pesan</label>
                     <textarea v-model="text" placeholder="Hello this is message text"
                               aria-label="message"></textarea>
                 </div>
                 <div class="field" v-if="isShowReplyId()">
-                    <label>Is Forwarded</label>
+                    <label>Tandai Diteruskan</label>
                     <div class="ui toggle checkbox">
                         <input type="checkbox" aria-label="is forwarded" v-model="is_forwarded">
-                        <label>Mark message as forwarded</label>
+                        <label>Tandai sebagai pesan diteruskan</label>
                     </div>
                 </div>
                 <div class="field" v-if="isGroup()">
-                    <label>Mention Everyone</label>
+                    <label>Sebut Semua (@everyone)</label>
                     <div class="ui toggle checkbox">
                         <input type="checkbox" aria-label="mention everyone" v-model="mention_everyone">
                         <label>Mention all group participants (@everyone)</label>
                     </div>
                 </div>
                 <div class="field">
-                    <label>Disappearing Duration (seconds)</label>
+                    <label>Pesan Hilang (detik)</label>
                     <input v-model.number="duration" type="number" min="0" placeholder="0 (no expiry)" aria-label="duration"/>
                 </div>
             </form>
@@ -155,7 +153,7 @@ export default {
             <button class="ui approve positive right labeled icon button" 
                  :class="{'disabled': !isValidForm() || loading}"
                  @click.prevent="handleSubmit">
-                Send
+                Kirim
                 <i class="send icon"></i>
             </button>
         </div>

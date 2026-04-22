@@ -48,12 +48,11 @@ export default {
     template: `
     <div class="blue card" @click="openModal()" style="cursor: pointer">
         <div class="content">
-            <a class="ui blue right ribbon label">Send</a>
-            <div class="header">Send Presence</div>
-            <div class="description">
-                Set <div class="ui green horizontal label">available</div> or <div class="ui grey horizontal label">unavailable</div>
-            </div>
+            <a class="ui blue right ribbon label">Status</a>
+            <div class="header">🟢 Atur Presence</div>
+            <div class="description">Online · offline · tidak tersedia</div>
         </div>
+    </div>
     </div>
     
     <!--  Modal SendPresence  -->
@@ -77,7 +76,7 @@ export default {
             <button class="ui approve positive right labeled icon button" 
                  :class="{'loading': loading, 'disabled': loading}"
                  @click.prevent="handleSubmit">
-                Send
+                Kirim
                 <i class="send icon"></i>
             </button>
         </div>
